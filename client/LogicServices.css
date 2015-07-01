@@ -1,4 +1,12 @@
-/* CSS declarations go here */
+/* CSS declarations */
+
+/* Elements ////////////////////////////////////// */
+
+th span {
+    margin: 10px;
+}
+
+/* Classes //////////////////////////////////////// */
 
 .main-header {
     background-color: lightskyblue;
@@ -8,18 +16,12 @@
     z-index: -1;
 }
 
-.gantt-container {
-    background-color: lavender;
-    height: 200px;
-    border-radius: 3px;
-    border-style: solid;
-    border-color: #00cce7;
-    border-width: 1px;
-    padding: 15px;
-}
-
-.table-container {
+.gantt-table-container {
     position: relative;
+    width: 1100px;
+    /*margin: 0 100px 0 100px;*/
+    margin: auto;
+
 }
 
 .draggable-task {
@@ -48,11 +50,9 @@
     z-index: 2;
 }
 
-th span {
-    margin: 10px;
-}
+/* IDs ///////////////////////////////////////// */
 
-#main-table {
+#gantt-table-id {
     z-index: 0;
 }
 
