@@ -19,9 +19,7 @@ th span {
 .gantt-table-container {
     position: relative;
     width: 1100px;
-    /*margin: 0 100px 0 100px;*/
     margin: auto;
-
 }
 
 .draggable-task {
