@@ -36,7 +36,7 @@
           <file leaf-file-name="LogicServicesLib.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/client/LogicServicesLib.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.49655172">
+                <state vertical-scroll-proportion="0.31034482">
                   <caret line="26" column="30" selection-start-line="26" selection-start-column="30" selection-end-line="26" selection-end-column="30" />
                   <folding>
                     <element signature="e#0#48#0" expanded="false" />
@@ -74,7 +74,7 @@
           <file leaf-file-name="LogicServices.css" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/client/LogicServices.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
+                <state vertical-scroll-proportion="-0.5586207">
                   <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
                   <folding />
                 </state>
@@ -493,7 +493,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/LogicServices.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="-0.5586207">
           <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
           <folding />
         </state>
@@ -501,7 +501,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/LogicServicesLib.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49655172">
+        <state vertical-scroll-proportion="0.31034482">
           <caret line="26" column="30" selection-start-line="26" selection-start-column="30" selection-end-line="26" selection-end-column="30" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
