@@ -20,13 +20,13 @@
     <favorites_list name="LogicServices" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5649547">
+    <splitter split-orientation="horizontal" split-proportion="0.51201326">
       <split-first>
         <leaf>
           <file leaf-file-name="LogicServices.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/client/LogicServices.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.5117541">
+                <state vertical-scroll-proportion="4.320072">
                   <caret line="186" column="54" selection-start-line="186" selection-start-column="54" selection-end-line="186" selection-end-column="54" />
                   <folding />
                 </state>
@@ -50,7 +50,7 @@
           <file leaf-file-name="LogicServices.css" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/client/LogicServices.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.31724137">
+                <state vertical-scroll-proportion="0.41034484">
                   <caret line="35" column="18" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
                   <folding />
                 </state>
@@ -305,7 +305,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/LogicServices.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5117541">
+        <state vertical-scroll-proportion="4.320072">
           <caret line="186" column="54" selection-start-line="186" selection-start-column="54" selection-end-line="186" selection-end-column="54" />
           <folding />
         </state>
@@ -313,7 +313,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/LogicServices.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31724137">
+        <state vertical-scroll-proportion="0.41034484">
           <caret line="35" column="18" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
           <folding />
         </state>
