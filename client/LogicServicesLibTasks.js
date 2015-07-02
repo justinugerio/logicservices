@@ -7,17 +7,26 @@
 LogicServices.Task = (function () {
 
     // variable declarations
-    var currentTaskCounter = 1,
-        numTasks           = 0;
+    var
+        // public
+        NumTasks              = 0,
+        ListTasks               = [],
+
+        // private
+        currentTaskCounter = 1;
 
 
     // function declarations
-    var addTask;
+    var
+        // public
+        createTask;
 
 
     // functions
     /////////////////////////////////////////////
-    addTask = function (name, containerID) {
+
+    // create task factory method
+    createTask = function (name, engineer) {
 
         var container = $('#' + containerID);
 
@@ -29,8 +38,11 @@ LogicServices.Task = (function () {
     /////////////////////////////////////////////
     return {
 
-        addTask: addTask
+        NumTasks: NumTasks,
+        ListTasks: ListTasks,
+        createTask: createTask
 
     };
 
 }) ();
+
