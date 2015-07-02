@@ -4,6 +4,7 @@
 
 th span {
     margin: 10px;
+    color: #4c4cbe;
 }
 
 /* Classes //////////////////////////////////////// */
@@ -24,17 +25,18 @@ th span {
 
 .draggable-task {
     position: absolute;
-    width: 80px;
-    height: 30px;
-    padding: 5px;
+    width: 70px;
+    height: 32px;
+    padding: 4px;
     float: left;
     margin: 0;
     border-style: solid;
     border-color: #089b06;
     border-width: 2px;
+    border-radius: 4px;
     background-color: #0ae726;
     color: #f74e3f;
-    z-index: 2;
+    z-index: 3;
     overflow: hidden;
 }
 
@@ -43,14 +45,30 @@ th span {
     width: 3px;
     border-style: solid;
     border-width: 2px;
-    z-index: 3;
+    z-index: 4;
 }
 
 .gantt-area {
     position: absolute;
     z-index: 1;
-    /*background-color: #06e85b;*/
-    /*opacity: 0.15;*/
+
+    /*
+    background-color: #06e85b;
+    opacity: 0.15;
+    */
+}
+
+.gantt-engineer-area {
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+
+    /*
+    border-style: solid;
+    border-width: 1px;
+    border-color: #122b40;
+    background-color: #d43f3a;
+    */
 }
 
 /* IDs ///////////////////////////////////////// */
@@ -60,26 +78,26 @@ th span {
 }
 
 #draggable-task1 {
-    top: 42px;
+    top: 41px;
     left: 188px;
 }
 
 #draggable-task2 {
-    top: 79px;
+    top: 78px;
     left: 188px;
 }
 
 #draggable-task3 {
-    top: 116px;
+    top: 115px;
     left: 188px;
 }
 
 #draggable-task4 {
-    top: 116px;
+    top: 115px;
     left: 280px;
 }
 
 #draggable-task5 {
-    top: 116px;
+    top: 115px;
     left: 372px;
 }

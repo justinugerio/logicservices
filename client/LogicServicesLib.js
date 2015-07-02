@@ -7,15 +7,29 @@
 LogicServices = (function () {
 
     // variable declarations
-    var Engineers = ['Andy James', 'Harold Johnson', 'Lakesha Hill'],
-          Hours = ['8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm'],
-          GanttAreaBuffer = { leftBuffer: 3, topBuffer: 3, widthBuffer: 3, heightBuffer: 2},
-          TableOffsetElementID = 'table-offset-element-id', // id's needed to retrieve element to calculate offset;
-          ColumnOffsetElementID = 'column-offset-element-id',
-          GanttAreaID = 'gantt-area-id';
+    var Engineers                   = ['Andy James', 'Harold Johnson', 'Lakiesha Hill'],  // default values
+        Hours                       = ['8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm'],  // default values
+        GanttAreaBuffer             = {leftBuffer: 3, topBuffer: 3, widthBuffer: 3, heightBuffer: 2},
+        TableOffsetElementID        = 'table-offset-element-id',    // id needed to retrieve element to calculate offset;
+        ColumnOffsetElementID       = 'column-offset-element-id',   // id needed to retrieve element to calculate offset;
+        GanttTableContainerID       = 'gantt-table-container-id',
+        GanttTableID                = 'gantt-table-id',
+        GanttAreaID                 = 'gantt-area-id',
+        TimelineID                  = 'timeline-id',
+        GanttEngineerAreaIDPrefix   = 'gantt-engineer-area-id-';
+
+
 
     // function declarations
-    var initTable, initGanttArea, getGanttOffset, getColumnOffset, getNumberEngineers, getNumberHours, addTimeline;
+    var initTable,
+        initGanttArea,
+        initGanttEngineerAreas,
+        getGanttOffset,
+        getColumnOffset,
+        getNumberEngineers,
+        getNumberHours,
+        addTimeline,
+        convertToTwoDigitString;
 
 
     // functions
@@ -27,7 +41,7 @@ LogicServices = (function () {
         Engineers = engineers;
         Hours = hours;
 
-        var table = $('#gantt-table-id');
+        var table = $('#' + GanttTableID);
         var tHeader, tBody, tRow, tHead, tData;
 
         if (!table) {
@@ -42,12 +56,12 @@ LogicServices = (function () {
         tRow.append(tHead);
 
         // for each hour, create a heading for the table
-        for (var i = 0; i < hours.length; i++) {
-            tHead = $('<th>').text(Hours[i]);
+        for (var h = 0; h < hours.length; h++) {
+            tHead = $('<th>').text(Hours[h]);
             tHead.addClass('col-lg-1');
             tRow.append(tHead);
 
-            if (i == 0) {
+            if (h == 0) {
                 tHead.attr('id', ColumnOffsetElementID); // set this ID so that we can later retrieve it for Gantt area
             }
         }
@@ -59,7 +73,7 @@ LogicServices = (function () {
 
         for (var i = 0; i < engineers.length; i++) {
             tRow = $('<tr>');
-            tHead = $('<th>').html('<span>' + Engineers[i] + '</span>')
+            tHead = $('<th>').html('<span>' + Engineers[i] + '</span>');
             tHead.addClass('col-lg-2');
             tRow.append(tHead);
 
@@ -79,9 +93,9 @@ LogicServices = (function () {
     initGanttArea = function () {
 
         var ganttContainer, ganttOffset, ganttAreaDiv, ganttOffsetX, ganttOffsetY, columnOffset,
-            numEngineers, numHours, leftBuffer, topBuffer, widthBuffer, heightBuffer;
+            numEngineers, numHours;
 
-        ganttContainer = $('#gantt-table-container-id');
+        ganttContainer = $('#' + GanttTableContainerID);
 
         if (!ganttContainer) {
             return;
@@ -107,9 +121,40 @@ LogicServices = (function () {
         });
 
         ganttContainer.append(ganttAreaDiv);
+
+        initGanttEngineerAreas();
     };
 
-    // returns the x and y offset for the Gantt area
+    // creates divs for each engineer within the Gantt area div
+    initGanttEngineerAreas = function () {
+
+        var container = $('#' + GanttAreaID);
+        var ganttEngineerArea, ganttOffset, count;
+
+        if (!container) {
+            return;
+        }
+
+        ganttOffset = getGanttOffset();
+
+        for (var i = 0; i < Engineers.length; i++) {
+
+            count = convertToTwoDigitString(i + 1);
+
+            ganttEngineerArea = $('<div>').addClass('gantt-engineer-area');
+            ganttEngineerArea.attr('id', GanttEngineerAreaIDPrefix + count);
+
+            ganttEngineerArea.css({
+                'height': ganttOffset.y + 1 + 'px',
+                'top': ((ganttOffset.y + 1) * i) + 'px'
+            });
+
+            container.append(ganttEngineerArea);
+        }
+
+    };
+
+    // returns the x and y offset for the Gantt area, as object { x: xVal, y: yVal }
     getGanttOffset = function () {
 
         var returnVal = { x: 0, y: 0 };
@@ -152,7 +197,7 @@ LogicServices = (function () {
     };
 
     // add a Timeline to the specified container
-    addTimeline = function (id, container) {
+    addTimeline = function () {
 
         var container = $('#' + GanttAreaID);
         var timeline, numEngineers, ganttOffset, heightBuffer, leftBuffer;
@@ -161,7 +206,7 @@ LogicServices = (function () {
             return;
         }
 
-        timeline = $('<div>').attr('id', id).addClass('timeline ui-widget-content draggable-timeline');
+        timeline = $('<div>').attr('id', TimelineID).addClass('timeline ui-widget-content draggable-timeline');
 
         numEngineers = getNumberEngineers();
         ganttOffset = getGanttOffset();
@@ -172,10 +217,21 @@ LogicServices = (function () {
             'height': ((ganttOffset.y * numEngineers) + heightBuffer) + 'px'
         });
 
-        container.append(timeline);
+        container.append(timeline); // add timeline to gantt area container
+        $('.draggable-timeline').draggable({ axis: 'x', containment: '#' + GanttAreaID });  // make it draggable
 
     };
 
+    // utility function that takes in a number and returns leading 0 if less than 10
+    convertToTwoDigitString = function (num) {
+        if (num < 10 && num > 0) {
+            return '0' + num.toString();
+        }
+        else
+        {
+            return num.toString();
+        }
+    };
 
     // return object
     /////////////////////////////////////////////
@@ -183,7 +239,6 @@ LogicServices = (function () {
 
         Engineers: Engineers,
         Hours: Hours,
-        GanttAreaID: GanttAreaID,
 
         initTable: initTable,
         initGanttArea: initGanttArea,
@@ -191,7 +246,9 @@ LogicServices = (function () {
 
         getGanttOffset: getGanttOffset,
         getNumberEngineers: getNumberEngineers,
-        getNumberHours: getNumberHours
+        getNumberHours: getNumberHours,
+
+        convertToTwoDigitString: convertToTwoDigitString
 
     };
 
