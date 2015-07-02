@@ -6,7 +6,6 @@ th span {
     margin: 10px;
 }
 
-
 /* Classes //////////////////////////////////////// */
 
 .main-header {
@@ -31,17 +30,17 @@ th span {
     float: left;
     margin: 0;
     border-style: solid;
-    border-color: #00ffce;
-    border-width: 3px;
-    background-color: #1000c5;
-    color: #e1d3fc;
+    border-color: #089b06;
+    border-width: 2px;
+    background-color: #0ae726;
+    color: #f74e3f;
     z-index: 2;
     overflow: hidden;
 }
 
 .draggable-timeline {
     position: absolute;
-    width: 4px;
+    width: 3px;
     border-style: solid;
     border-width: 2px;
     z-index: 3;
@@ -53,7 +52,6 @@ th span {
     /*background-color: #06e85b;*/
     /*opacity: 0.15;*/
 }
-
 
 /* IDs ///////////////////////////////////////// */
 
