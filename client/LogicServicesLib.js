@@ -196,6 +196,40 @@ LogicServices = (function () {
 
     };
 
+
+    // creates divs for each engineer within the Gantt area div
+    initGanttEngineerAreas = function () {
+
+        var container = $('#' + ganttAreaID);
+        var ganttEngineerArea, ganttEngineerAreaObj, ganttOffset, count;
+
+        if (!container) {
+            return;
+        }
+
+        ganttOffset = getGanttOffset();
+
+        for (var i = 0; i < Engineers.length; i++) {
+
+            count = convertToTwoDigitString(i + 1);
+
+            ganttEngineerArea = $('<div>').addClass('gantt-engineer-area');
+            ganttEngineerArea.attr('id', ganttEngineerAreaIDPrefix + count);
+
+            ganttEngineerArea.css({
+                'height': ganttOffset.y + 1 + 'px',
+                'top': ((ganttOffset.y + 1) * i) + 'px'
+            });
+
+            container.append(ganttEngineerArea);
+
+            ganttEngineerAreaObj = new GanttEngineerArea(i, Engineers[i], ganttEngineerArea);
+            GanttArea.ListGanttEngAreas.push(ganttEngineerAreaObj);
+
+        }
+
+    };
+
     // returns the x and y offset for the Gantt area, as object { x: xVal, y: yVal }
     getGanttOffset = function () {
 
@@ -260,6 +294,7 @@ LogicServices = (function () {
         });
 
         container.append(timeline); // add timeline to gantt area container
+
         $('.draggable-timeline').draggable({ axis: 'x', containment: '#' + ganttAreaID });  // make it draggable
 
         GanttArea.$Timeline = timeline;

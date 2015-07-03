@@ -8,8 +8,6 @@ $(function() {
     // initialize
     LogicServices.initialize(engineers, hours);
 
-
-
     // create tasks
     $('.draggable-task').draggable({ axis: 'x', containment: '#gantt-area-id' })
       .resizable({ maxHeight: 30, minHeight: 30 });
