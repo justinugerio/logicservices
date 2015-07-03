@@ -7,14 +7,6 @@
 LogicServices.Task = (function () {
 
     // variable declarations
-<<<<<<< HEAD
-    var currentTaskCounter = 1,
-        numTasks           = 0;
-
-
-    // function declarations
-    var addTask;
-=======
     var
         // public
         NumTasks              = 0,
@@ -28,7 +20,6 @@ LogicServices.Task = (function () {
     var
         // public
         createTask;
->>>>>>> 4330d84846157b5e9981b54b56b96f2b6420e60c
 
 
     // functions
