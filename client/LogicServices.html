@@ -70,7 +70,10 @@
             <h4>Engineer Gantt</h4>
         </div>
         <div class="panel-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
+            <p><ul>
+                    <li>Double-click a task to select.</li>
+                 </ul>
+            </p>
         </div>
     </div>
 </div> <!-- end panel container -->
@@ -83,7 +86,7 @@
     </table>
 
 
-    <!-- tasks -->
+    <!-- tasks
     <div id="draggable-task1" class="ui-widget-content draggable-task">
         <p><strong>Task 1</strong></p>
     </div>
@@ -103,6 +106,7 @@
     <div id="draggable-task5" class="ui-widget-content draggable-task">
         <p><strong>Task 5</strong></p>
     </div>
+    -->
 
 </div> <!-- end table-container -->
 
@@ -113,7 +117,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <p>Select an Engineer and then click to schedule a task.</p>
-                <button class="btn btn-primary btn-block"><strong>Schedule Task</strong></button>
+                <button id="btn-create-task" class="btn btn-primary btn-block"><strong>Schedule Task</strong></button>
             </div>
         </div>
     </div>
@@ -127,6 +131,27 @@
             </div>
         </div>
     </footer>
+
+
+    <!-- Modals -->
+    <!-- Modal - small generic -->
+    <div id="modal-small-generic" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Modal title goes here</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body goes here</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </div>
 <!-- /.container -->

@@ -27,8 +27,8 @@ th span {
 .draggable-task {
     position: absolute;
     width: 70px;
-    height: 32px;
-    padding: 4px;
+    height: 36px;
+    padding: 7px;
     float: left;
     margin: 0;
     border-style: solid;
@@ -74,6 +74,13 @@ th span {
 
 .selected-engineer {
     background-color: #95dfec;
+}
+
+.selected-task {
+    padding: 5px;
+    border-width: 4px;
+    border-color: #087706;
+
 }
 
 /* IDs ///////////////////////////////////////// */

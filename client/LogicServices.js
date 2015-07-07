@@ -8,11 +8,7 @@ $(function() {
     // initialize
     LogicServices.initialize(engineers, hours);
     LogicServices.EngineerManager.initialize(LogicServices.GanttArea);
-
-    // create tasks
-    $('.draggable-task').draggable({ axis: 'x', containment: '#gantt-area-id' })
-      .resizable({ maxHeight: 31, minHeight: 32 });
-
+    LogicServices.TaskManager.initialize(LogicServices.GanttArea);
 
 
     /// testing code below here

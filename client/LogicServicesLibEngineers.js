@@ -10,8 +10,8 @@ LogicServices.EngineerManager = (function () {
     var
         // public
         NumEngineers              = 0,
-        ListEngineerSets           = [],
-        ListSelectedEngineers      = [],
+        ListEngineerSets           = [],    // array of EngineerSet objects
+        ListSelectedEngineers      = [],    // array of Number as index of Engineer
 
         // private Class
         EngineerSet;
@@ -117,7 +117,7 @@ LogicServices.EngineerManager = (function () {
         this.index = index;
         this.engName = engName;
         this.$engTableHead = engTableHead;
-        this.$ganttEngArea = ganttEngArea;
+        this.ganttEngArea = ganttEngArea;
 
     };
 

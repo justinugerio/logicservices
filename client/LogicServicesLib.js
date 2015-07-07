@@ -9,6 +9,7 @@ LogicServices = (function () {
     // variable declarations
     var
         // public variables
+        DEBUG                       = true;     // if true, then write to console where "console.log" is coded
         Engineers                   = ['Andy James', 'Harold Johnson', 'Lakwanda Hill'],  // default values
         Hours                          = ['8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm'],  // default values
         GanttArea                   = {
@@ -43,6 +44,7 @@ LogicServices = (function () {
         convertToTwoDigitString,
         getNumberEngineers,
         getNumberHours,
+        showModalSmallGeneric,
 
         // private functions
         initTable,
@@ -282,28 +284,40 @@ LogicServices = (function () {
     addTimeline = function () {
 
         var container = $('#' + ganttAreaID);
-        var timeline, numEngineers, ganttOffset, heightBuffer, leftBuffer;
+        var $timeline, numEngineers, ganttOffset, heightBuffer, leftBuffer;
 
         if (!container) {
             return;
         }
 
-        timeline = $('<div>').attr('id', timelineID).addClass('timeline ui-widget-content draggable-timeline');
+        $timeline = $('<div>').attr('id', timelineID).addClass('timeline ui-widget-content draggable-timeline');
 
         numEngineers = getNumberEngineers();
         ganttOffset = getGanttOffset();
         heightBuffer = 3;
-        leftBuffer = -1;
-        timeline.css({
+        leftBuffer = 0;
+        $timeline.css({
             'left': leftBuffer,
             'height': ((ganttOffset.y * numEngineers) + heightBuffer) + 'px'
         });
 
-        container.append(timeline); // add timeline to gantt area container
+        container.append($timeline); // add timeline to gantt area container
 
         $('.draggable-timeline').draggable({ axis: 'x', containment: '#' + ganttAreaID });  // make it draggable
 
-        GanttArea.$Timeline = timeline;
+        $timeline.draggable({
+            stop: function () {
+                $this = $(this);
+
+                if (LogicServices.DEBUG){
+                    console.log('Timeline coordinates - Left: ' + $this.position().left + ' Top: ' + $this.position().top);
+                }
+
+            }
+
+        });
+
+        GanttArea.$Timeline = $timeline;
 
     };
 
@@ -318,6 +332,18 @@ LogicServices = (function () {
         }
     };
 
+    // shows small, generic modal with title and message
+    showModalSmallGeneric = function (title, message) {
+
+        var $modal = $('#modal-small-generic');
+        var $title = $('.modal-title', $modal);
+        var $message = $('.modal-body', $modal);
+
+        $title.text(title);
+        $('p', $message).html(message);
+
+        $modal.modal();
+    };
 
     // Class for Gantt Engineer Area
     GanttEngineerArea = function (num, name, $obj) {
@@ -332,6 +358,7 @@ LogicServices = (function () {
     /////////////////////////////////////////////
     return {
 
+        DEBUG: DEBUG,
         Engineers: Engineers,
         Hours: Hours,
         GanttArea: GanttArea,
@@ -339,6 +366,7 @@ LogicServices = (function () {
         initialize: initialize,
         getNumberEngineers: getNumberEngineers,
         getNumberHours: getNumberHours,
+        showModalSmallGeneric: showModalSmallGeneric,
 
         convertToTwoDigitString: convertToTwoDigitString
 
