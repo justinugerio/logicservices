@@ -3,13 +3,14 @@
  */
 
 // LogicServices global namespace var
+
 // Self-calling function
 LogicServices = (function () {
 
     // variable declarations
     var
         // public variables
-        DEBUG                       = true;     // if true, then write to console where "console.log" is coded
+        DEBUG = true,     // if true, then write to console where "console.log" is coded
         Engineers                   = ['Andy James', 'Harold Johnson', 'Lakwanda Hill'],  // default values
         Hours                          = ['8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm'],  // default values
         GanttArea                   = {
