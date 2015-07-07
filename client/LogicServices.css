@@ -5,6 +5,7 @@
 th span {
     margin: 10px;
     color: #4c4cbe;
+
 }
 
 /* Classes //////////////////////////////////////// */
@@ -69,6 +70,10 @@ th span {
     border-color: #122b40;
     background-color: #d43f3a;
     */
+}
+
+.selected-engineer {
+    background-color: #95dfec;
 }
 
 /* IDs ///////////////////////////////////////// */

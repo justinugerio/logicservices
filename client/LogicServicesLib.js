@@ -13,8 +13,10 @@ LogicServices = (function () {
         Hours                          = ['8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm'],  // default values
         GanttArea                   = {
                                                 $GanttArea : null,
-                                                ListGanttEngAreas: [],
                                                 $Timeline: null,
+                                                ListEngineers: [],
+                                                ListGanttEngAreas: [],
+                                                ListEngTableHeads: [],
                                                 Width: 0,
                                                 Height: 0
                                             },
@@ -109,6 +111,10 @@ LogicServices = (function () {
             tRow = $('<tr>');
             tHead = $('<th>').html('<span>' + Engineers[i] + '</span>');
             tHead.addClass('col-lg-2');
+
+            GanttArea.ListEngineers.push(Engineers[i]);
+            GanttArea.ListEngTableHeads.push(tHead);
+
             tRow.append(tHead);
 
             for (var j = 0; j < hours.length; j++) {

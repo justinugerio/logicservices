@@ -4,7 +4,7 @@
 
 // LogicServices global namespace var
 // Self-calling function
-LogicServices.Task = (function () {
+LogicServices.TaskManager = (function () {
 
     // variable declarations
     var
