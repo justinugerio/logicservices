@@ -13,7 +13,7 @@ LogicServices.EngineerManager = (function () {
         ListEngineerSets           = [],    // array of EngineerSet objects
 
         // private
-        SelectedEngineerIndex      = -2,    // index of Engineer
+        SelectedEngineerIndex      = -1,    // index of Engineer
 
         // Class
         EngineerSet;
