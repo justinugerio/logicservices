@@ -41,31 +41,22 @@ LogicServices.TaskManager = (function () {
         // initialize create task button event
         $('#btn-create-task').click(function () {
 
-            var listSelectedEngineers = LogicServices.EngineerManager.ListSelectedEngineers;
+            var selectedEngineer = LogicServices.EngineerManager.getSelectedEngineerIndex();
 
             // validate only 1 Engineer selected
-            if (listSelectedEngineers.length == 0) {
+            if (selectedEngineer < 0) {
                 LogicServices.showModalOK('Create Task', 'Please select an Engineer.');
                 return;
             }
-            else if (listSelectedEngineers.length > 1) {
-                LogicServices.showModalOK('Create Task', 'Please select only <em>one</em> Engineer.');
-                return;
+
+            try
+            {
+                createTask(currentTaskCounter, selectedEngineer);
+                NumTasks++;
+                currentTaskCounter++;
             }
-
-            // keep as for loop for now in case we want to perform operation on multiple engineers
-            for (var i=0; i < listSelectedEngineers.length; i++) {
-
-                try
-                {
-                    createTask(currentTaskCounter, listSelectedEngineers[i]);
-                    NumTasks++;
-                    currentTaskCounter++;
-                }
-                catch (err) {
-                    LogicServices.showModalSmallGeneric('Error Creating Task', err.message);
-                }
-
+            catch (err) {
+                LogicServices.showModalOK('Error Creating Task', err.message);
             }
 
         });
@@ -104,7 +95,7 @@ LogicServices.TaskManager = (function () {
         }); // set event to write left and top coordinates
 
         // event for click to highlight selected task
-        $task.dblclick(function() {
+        $task.dblclick(function() {     // click or dblclick
             $(this).toggleClass('selected-task');
 
             if ($(this).hasClass('selected-task')) {

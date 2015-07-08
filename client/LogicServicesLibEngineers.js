@@ -11,9 +11,11 @@ LogicServices.EngineerManager = (function () {
         // public
         NumEngineers              = 0,
         ListEngineerSets           = [],    // array of EngineerSet objects
-        ListSelectedEngineers      = [],    // array of Number as index of Engineer
 
-        // private Class
+        // private
+        SelectedEngineerIndex      = -2,    // index of Engineer
+
+        // Class
         EngineerSet;
 
     // function declarations
@@ -22,6 +24,7 @@ LogicServices.EngineerManager = (function () {
         initialize,
         getEngineerSetByIndex,
         getEngineerSetByName,
+        getSelectedEngineerIndex,
 
         // private
         initEvents,
@@ -59,19 +62,17 @@ LogicServices.EngineerManager = (function () {
 
             // event for click to highlight selected engineer
             $engTableHead.click(function() {
-                //$('span', $(this)).toggleClass('selected-engineer');
                 $(this).toggleClass('selected-engineer');
 
                 if ($(this).hasClass('selected-engineer')) {
-                    selectEngineer($(this));  // add to ListSelectedEngineers
+                    selectEngineer($(this));  // set selected engineer
                 }
                 else
                 {
-                    unselectEngineer($(this));    // remove from ListSelectedEngineers
+                    unselectEngineer();    // unset selected engineer
                 }
             });
         }
-
     };
 
     // get engineer set by Index
@@ -95,21 +96,29 @@ LogicServices.EngineerManager = (function () {
     selectEngineer = function ($selectedTableHead) {
         var engName = $('span', $selectedTableHead).text();
         var indexOfSelectedEng = getEngineerSetByName(engName).index;
+        var $engTableHead;
 
-        if (ListSelectedEngineers.indexOf(indexOfSelectedEng) == -1) {
-            ListSelectedEngineers.push(indexOfSelectedEng);
+        SelectedEngineerIndex = indexOfSelectedEng; // set the selected Engineer
+
+        for (var i=0; i < ListEngineerSets.length; i++) {   // unselect any existing selected Engineers
+            if (i != indexOfSelectedEng) {
+                $engTableHead = ListEngineerSets[i].$engTableHead;
+                $engTableHead.removeClass('selected-engineer');
+            }
         }
+
     };
 
-    // remove from ListSelectedEngineers, don't do anything if already removed
-    unselectEngineer = function($selectedTableHead) {
-        var engName = $('span', $selectedTableHead).text();
-        var indexOfSelectedEng = getEngineerSetByName(engName).index;
-        var indexInList = ListSelectedEngineers.indexOf(indexOfSelectedEng);
+    // unset SelectedEngineerIndex
+    unselectEngineer = function() {
 
-        if (indexInList > -1) {
-            ListSelectedEngineers.splice(indexInList, 1);
-        }
+        SelectedEngineerIndex = -1;     // set no Engineer selected
+
+    };
+
+    // return selected Engineer index
+    getSelectedEngineerIndex = function () {
+        return SelectedEngineerIndex;
     };
 
     // EngineerSet Class definition
@@ -127,10 +136,10 @@ LogicServices.EngineerManager = (function () {
 
         NumEngineers: NumEngineers,
         ListEngineerSets: ListEngineerSets,
-        ListSelectedEngineers: ListSelectedEngineers,
         initialize: initialize,
         getEngineerSetByIndex: getEngineerSetByIndex,
-        getEngineerSetByName: getEngineerSetByName
+        getEngineerSetByName: getEngineerSetByName,
+        getSelectedEngineerIndex: getSelectedEngineerIndex
 
     };
 
