@@ -46,6 +46,7 @@ LogicServices = (function () {
         getNumberEngineers,
         getNumberHours,
         showModalSmallGeneric,
+        showModalSmallOKCancel,
 
         // private functions
         initTable,
@@ -344,6 +345,32 @@ LogicServices = (function () {
         $('p', $message).html(message);
 
         $modal.modal();
+
+    };
+
+    // shows small, ok/cancel buttons on modal with title and message
+    showModalSmallOKCancel = function (title, message, callback) {
+
+        var $modal = $('#modal-small-okcancel');
+        var $title = $('.modal-title', $modal);
+        var $message = $('.modal-body', $modal);
+
+        $title.text(title);
+        $('p', $message).html(message);
+
+        $modal.on('show.bs.modal', function() {    // wire up the OK button to dismiss the modal when shown
+            $('#btn-okcancel').on('click', function(e) {
+                callback();
+                $modal.modal('hide');     // dismiss the dialog
+            });
+        });
+
+        $modal.on('hide.bs.modal', function() {    // remove the event listeners when the dialog is dismissed
+            $('#btn-okcancel').off('click');
+        });
+
+        $modal.modal('show');
+
     };
 
     // Class for Gantt Engineer Area
@@ -368,6 +395,7 @@ LogicServices = (function () {
         getNumberEngineers: getNumberEngineers,
         getNumberHours: getNumberHours,
         showModalSmallGeneric: showModalSmallGeneric,
+        showModalSmallOKCancel: showModalSmallOKCancel,
 
         convertToTwoDigitString: convertToTwoDigitString
 
