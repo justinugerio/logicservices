@@ -57,6 +57,7 @@ th span {
     background-color: #06e85b;
     opacity: 0.15;
     */
+
 }
 
 .gantt-engineer-area {
@@ -70,6 +71,14 @@ th span {
     border-color: #122b40;
     background-color: #d43f3a;
     */
+}
+
+.gantt-staging-area {
+    height: 100px;
+}
+
+.gantt-staging-area-text {
+    opacity: 0.50;
 }
 
 .selected-engineer {

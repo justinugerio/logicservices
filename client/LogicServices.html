@@ -69,11 +69,7 @@
         <div class="panel-heading">
             <h4>Engineer Gantt</h4>
         </div>
-        <div class="panel-body">
-            <ul>
-                <li>Double-click a task to select.</li>
-            </ul>
-        </div>
+
     </div>
 </div> <!-- end panel container -->
 
@@ -88,20 +84,59 @@
 
 
 <div class="container">
-    <!-- gantt staging area -->
-    <div class="well well-lg">
-        <div class="row">
-            <div class="col-lg-12">
-                <p>Select an Engineer and then click to schedule a task.</p>
-                <button id="btn-create-task" class="btn btn-primary btn-block"><strong>Schedule Task</strong></button>
+
+    <!-- Gantt staging area -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-lg gantt-staging-area">
+                <div class="gantt-staging-area-text"><h3 class="text-center"><strong>Unscheduled Tasks</strong></h3></div>
             </div>
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Schedule Task</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Select an Engineer and then click to schedule a Task.</p>
+                    <button id="btn-create-task" class="btn btn-primary btn-block"><strong>Schedule</strong></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Unschedule Task</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Select Tasks from the Gantt and then click to unschedule.</p>
+                    <button id="btn-create-task" class="btn btn-primary btn-block"><strong>Unschedule</strong></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Reschedule Task</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Select an Engineer from the Gantt and Tasks from the Unscheduled Area and then click to reschedule.</p>
+                    <button id="btn-unschedule-task" class="btn btn-primary btn-block"><strong>Reschedule</strong></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Footer -->
      <footer>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-md-12">
                 <hr>
                 <p><em>Copyright &copy; Justin Ugerio 2015</em></p>
             </div>

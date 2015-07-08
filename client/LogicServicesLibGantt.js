@@ -10,7 +10,7 @@ LogicServices.GanttManager = (function () {
     // variable declarations
     var
     // public variables
-        Engineers                   = ['Andy James', 'Harold Johnson', 'Lakwanda Hill'],  // default values
+        Engineers                   = ['Andy James', 'Harold Johnson', 'Lakwanda Hill', 'Jimmy Neutron'],  // default values
         Hours                          = ['8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm'],  // default values
         GanttArea                   = {
             $GanttArea : null,
@@ -23,7 +23,8 @@ LogicServices.GanttManager = (function () {
         },
 
     // private
-        ganttAreaBuffer            = {leftBuffer: 3, topBuffer: 3, widthBuffer: 3, heightBuffer: 2},
+        //ganttAreaBuffer            = {leftBuffer: 3, topBuffer: 3, widthBuffer: 3, heightBuffer: 2},
+        ganttAreaBuffer            = {leftBuffer: 0, topBuffer: 1, widthBuffer: -4, heightBuffer: -2},
         tableOffsetElementID     = 'table-offset-element-id',    // id needed to retrieve element to calculate offset;
         columnOffsetElementID   = 'column-offset-element-id',   // id needed to retrieve element to calculate offset;
         ganttTableContainerID    = 'gantt-table-container-id',
@@ -40,7 +41,6 @@ LogicServices.GanttManager = (function () {
     var
     // public functions
         initialize,
-        convertToTwoDigitString,
         getNumberEngineers,
         getNumberHours,
 
@@ -188,8 +188,8 @@ LogicServices.GanttManager = (function () {
             ganttEngineerArea.attr('id', ganttEngineerAreaIDPrefix + count);
 
             ganttEngineerArea.css({
-                'height': ganttOffset.y + 1 + 'px',
-                'top': ((ganttOffset.y + 1) * i) + 'px'
+                'height': ganttOffset.y + 'px',
+                'top': ((ganttOffset.y - 1) * i) + 'px'
             });
 
             container.append(ganttEngineerArea);
@@ -211,9 +211,8 @@ LogicServices.GanttManager = (function () {
             return returnVal;
         }
 
-        element = element.get(0);
-        returnVal.x = element.scrollWidth;
-        returnVal.y = element.scrollHeight;
+        returnVal.x = element.outerWidth();
+        returnVal.y = element.outerHeight();
 
         return returnVal;
     };
@@ -227,8 +226,7 @@ LogicServices.GanttManager = (function () {
             return 0;
         }
 
-        element = element.get(0);
-        return element.scrollWidth;
+        return element.outerWidth();
 
     };
 
@@ -246,7 +244,7 @@ LogicServices.GanttManager = (function () {
     addTimeline = function () {
 
         var container = $('#' + ganttAreaID);
-        var $timeline, numEngineers, ganttOffset, heightBuffer, leftBuffer;
+        var $timeline, numEngineers, ganttOffset, leftBuffer, topBuffer;
 
         if (!container) {
             return;
@@ -256,11 +254,12 @@ LogicServices.GanttManager = (function () {
 
         numEngineers = getNumberEngineers();
         ganttOffset = getGanttOffset();
-        heightBuffer = 3;
         leftBuffer = 0;
+        topBuffer = -1;
         $timeline.css({
             'left': leftBuffer,
-            'height': ((ganttOffset.y * numEngineers) + heightBuffer) + 'px'
+            'top': topBuffer,
+            'height': ((ganttOffset.y - 1) * numEngineers) + 1 + 'px'
         });
 
         container.append($timeline); // add timeline to gantt area container
