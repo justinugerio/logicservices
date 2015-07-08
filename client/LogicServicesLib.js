@@ -45,8 +45,8 @@ LogicServices = (function () {
         convertToTwoDigitString,
         getNumberEngineers,
         getNumberHours,
-        showModalSmallGeneric,
-        showModalSmallOKCancel,
+        showModalOK,
+        showModalOKCancel,
 
         // private functions
         initTable,
@@ -335,42 +335,44 @@ LogicServices = (function () {
     };
 
     // shows small, generic modal with title and message
-    showModalSmallGeneric = function (title, message) {
-
-        var $modal = $('#modal-small-generic');
-        var $title = $('.modal-title', $modal);
-        var $message = $('.modal-body', $modal);
-
-        $title.text(title);
-        $('p', $message).html(message);
-
-        $modal.modal();
-
+    showModalOK = function (title, message) {
+        bootbox.dialog({
+            message: message,
+            title: title,
+            buttons: {
+                ok: {
+                    label: "OK",
+                    className: "btn-primary",
+                    callback: function() {
+                        // do nothing but close
+                    }
+                }
+            }
+        });
     };
 
-    // shows small, ok/cancel buttons on modal with title and message
-    showModalSmallOKCancel = function (title, message, callback) {
-
-        var $modal = $('#modal-small-okcancel');
-        var $title = $('.modal-title', $modal);
-        var $message = $('.modal-body', $modal);
-
-        $title.text(title);
-        $('p', $message).html(message);
-
-        $modal.on('show.bs.modal', function() {    // wire up the OK button to dismiss the modal when shown
-            $('#btn-okcancel').on('click', function(e) {
-                callback();
-                $modal.modal('hide');     // dismiss the dialog
-            });
+    // shows ok/cancel buttons on modal with title and message
+    showModalOKCancel = function (title, message, callback) {
+        bootbox.dialog({
+            message: message,
+            title: title,
+            buttons: {
+                ok: {
+                    label: "OK",
+                    className: "btn-primary",
+                    callback: function() {
+                        callback();
+                    }
+                },
+                cancel: {
+                    label: "Cancel",
+                    className: "btn-default",
+                    callback: function() {
+                        // do nothing but close
+                    }
+                }
+            }
         });
-
-        $modal.on('hide.bs.modal', function() {    // remove the event listeners when the dialog is dismissed
-            $('#btn-okcancel').off('click');
-        });
-
-        $modal.modal('show');
-
     };
 
     // Class for Gantt Engineer Area
@@ -394,8 +396,8 @@ LogicServices = (function () {
         initialize: initialize,
         getNumberEngineers: getNumberEngineers,
         getNumberHours: getNumberHours,
-        showModalSmallGeneric: showModalSmallGeneric,
-        showModalSmallOKCancel: showModalSmallOKCancel,
+        showModalOK: showModalOK,
+        showModalOKCancel: showModalOKCancel,
 
         convertToTwoDigitString: convertToTwoDigitString
 

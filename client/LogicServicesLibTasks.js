@@ -32,7 +32,6 @@ LogicServices.TaskManager = (function () {
         Task;
 
 
-
     // functions
     /////////////////////////////////////////////
 
@@ -46,11 +45,11 @@ LogicServices.TaskManager = (function () {
 
             // validate only 1 Engineer selected
             if (listSelectedEngineers.length == 0) {
-                LogicServices.showModalSmallGeneric('Create Task', 'Please select an Engineer.');
+                LogicServices.showModalOK('Create Task', 'Please select an Engineer.');
                 return;
             }
             else if (listSelectedEngineers.length > 1) {
-                LogicServices.showModalSmallGeneric('Create Task', 'Please select only ' + '<em>one</em>' + ' Engineer.');
+                LogicServices.showModalOK('Create Task', 'Please select only <em>one</em> Engineer.');
                 return;
             }
 
