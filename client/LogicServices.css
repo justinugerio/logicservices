@@ -99,27 +99,3 @@ th span {
     z-index: 0;
 }
 
-#draggable-task1 {
-    top: 41px;
-    left: 188px;
-}
-
-#draggable-task2 {
-    top: 78px;
-    left: 188px;
-}
-
-#draggable-task3 {
-    top: 115px;
-    left: 188px;
-}
-
-#draggable-task4 {
-    top: 115px;
-    left: 280px;
-}
-
-#draggable-task5 {
-    top: 115px;
-    left: 372px;
-}
