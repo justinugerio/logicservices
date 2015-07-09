@@ -177,7 +177,7 @@ LogicServices.TaskManager = (function () {
             task = getTaskByID(taskID);
 
             if ($task[0]) {
-                
+
                 $taskDetach = null;
                 $ganttStagingArea = LogicServices.GanttManager.GanttArea.$GanttStagingArea; // check where task is first
 
