@@ -63,13 +63,18 @@
 </div> <!-- end container -->
 
 
+
 <!-- panel container -->
 <div class="container">
     <div class="panel panel-info">
         <div class="panel-heading">
-            <button id="btn-clear-tasks" class="btn btn-default btn-sm pull-right">
-                <strong>Clear Tasks</strong>
-            </button>
+            <div class="pull-right">
+
+                <button id="btn-clear-tasks" class="btn btn-default btn-sm">
+                    <strong>Clear Tasks &nbsp;</strong>
+                    <span id="num-tasks-badge-id" class="badge"></span>
+                </button>
+            </div>
             <h4>Engineer Gantt</h4>
         </div>
     </div>
@@ -87,7 +92,7 @@
 
 <div class="container">
 
-    <!-- Gantt staging area -->
+    <!-- Gantt Staging Area -->
     <div class="row">
         <div class="col-md-12">
             <div id="gantt-staging-area-id" class="well well-lg gantt-staging-area">
@@ -95,44 +100,111 @@
             </div>
         </div>
     </div>
+    <!-- end Gantt Staging Area -->
 
-    <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Schedule Task</h3>
+
+    <!-- Nav tabs -->
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#tab-scheduling" aria-controls="scheduling" role="tab" data-toggle="tab"><strong>Basic Scheduling</strong></a></li>
+            <li role="presentation"><a href="#tab-schedule-update" aria-controls="schedule-update" role="tab" data-toggle="tab"><strong>Schedule Update</strong></a></li>
+            <li role="presentation"><a href="#tab-scheduling-workflow" aria-controls="scheduling-workflow" role="tab" data-toggle="tab"><strong>Scheduling Workflow</strong></a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+
+            <!-- Scheduling tab -->
+            <div role="tabpanel" class="tab-pane active" id="tab-scheduling">
+
+                <div class="tab-div">
+
+                    <!-- Scheduling Actions -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Schedule Task</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Select an Engineer and then click to schedule a Task.</p>
+                                    <button id="btn-create-task" class="btn btn-success center-block"><strong>Schedule</strong></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Unschedule Task</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Select Tasks (double-click) from the Gantt and then click to unschedule.</p>
+                                    <button id="btn-unschedule-task" class="btn btn-danger center-block"><strong>Unschedule</strong></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Reschedule Task</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Select an Engineer and Tasks from the Unscheduled Area and then click to reschedule.</p>
+                                    <button id="btn-reschedule-task" class="btn btn-warning center-block"><strong>Reschedule</strong></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end Scheduling Actions -->
+
                 </div>
-                <div class="panel-body">
-                    <p>Select an Engineer and then click to schedule a Task.</p>
-                    <button id="btn-create-task" class="btn btn-success center-block"><strong>Schedule</strong></button>
+
+            </div>
+            <!-- end Scheduling tab -->
+
+            <div role="tabpanel" class="tab-pane" id="tab-schedule-update">
+                <div class="tab-div">
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Rearrange Schedule</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Select an Engineer and move the Timeline.</p>
+                                    <button class="btn btn-primary center-block"><strong>Rearrange Schedule</strong></button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Unschedule Task</h3>
-                </div>
-                <div class="panel-body">
-                    <p>Select Tasks (double-click) from the Gantt and then click to unschedule.</p>
-                    <button id="btn-unschedule-task" class="btn btn-danger center-block"><strong>Unschedule</strong></button>
+            <div role="tabpanel" class="tab-pane" id="tab-scheduling-workflow">
+                <div class="tab-div">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Schedule & Reshuffle</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Select an unscheduled Task and Schedule.</p>
+                                    <button class="btn btn-primary center-block"><strong>Schedule & Reshuffle</strong></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Reschedule Task</h3>
-                </div>
-                <div class="panel-body">
-                    <p>Select an Engineer and Tasks from the Unscheduled Area and then click to reschedule.</p>
-                    <button id="btn-reschedule-task" class="btn btn-warning center-block"><strong>Reschedule</strong></button>
-                </div>
-            </div>
         </div>
     </div>
+    <!-- end Nav Tab Panes -->
 
 
     <!-- Footer -->
@@ -144,8 +216,9 @@
             </div>
         </div>
     </footer>
+    <!-- end Footer -->
 
 </div>
-<!-- /.container -->
+<!-- end container -->
 
 </body>

@@ -56,6 +56,9 @@ LogicServices.TaskManager = (function () {
             {
                 // create task here
                 createTask(selectedEngineer);
+
+                // update number of tasks badge
+                $('#num-tasks-badge-id').text(NumTasks);
             }
             catch (err) {
                 LogicServices.showModalOK('Error Creating Task', err.message);
@@ -158,7 +161,7 @@ LogicServices.TaskManager = (function () {
 
         $assignedArea.append($task);    // add $task to gantt engineer area
 
-        task = new Task(taskID, $assignedArea);   // create task object
+        task = new Task(taskNum, taskID, $assignedArea);   // create task object
         ListTasks.push(task);       // add task to list of Task objects
 
         NumTasks++;     // increment counters
@@ -285,13 +288,6 @@ LogicServices.TaskManager = (function () {
         }
     };
 
-    // Task Class
-    Task = function (taskID, assignedArea) {
-        this.taskID = taskID;
-        this.$assignedArea = assignedArea;
-    };
-
-
     // clear all tasks by removing task and resetting counters
     clearAllTasks = function () {
 
@@ -307,11 +303,22 @@ LogicServices.TaskManager = (function () {
         NumTasks = 0;
         currentTaskCounter = 1;
 
+        // update number of tasks badge
+        $('#num-tasks-badge-id').text('');
+
+    };
+
+    ////////////////////////////////////////////////////////////////////////
+    // Task class
+    Task = function (taskNum, taskID, assignedArea) {
+        this.taskNum = taskNum;
+        this.taskID = taskID;
+        this.$assignedArea = assignedArea;
     };
 
 
+    ///////////////////////////////////////////////////////////////////////
     // return object
-    /////////////////////////////////////////////
     return {
 
         NumTasks: NumTasks,

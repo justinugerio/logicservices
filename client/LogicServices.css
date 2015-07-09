@@ -93,6 +93,11 @@ th span {
 
 }
 
+.tab-div {
+    margin: 20px;
+    padding-bottom: 15px;
+}
+
 /* IDs ///////////////////////////////////////// */
 
 #gantt-table-id {
