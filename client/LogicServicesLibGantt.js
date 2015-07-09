@@ -14,6 +14,7 @@ LogicServices.GanttManager = (function () {
         Hours                          = ['8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm'],  // default values
         GanttArea                   = {
             $GanttArea : null,
+            $GanttStagingArea: null,
             $Timeline: null,
             ListEngineers: [],
             ListGanttEngAreas: [],
@@ -67,6 +68,9 @@ LogicServices.GanttManager = (function () {
 
         // add timeline to Gantt area
         addTimeline();
+
+        // get Gantt Staging Area
+        GanttArea.$GanttStagingArea = $('#gantt-staging-area-id');
 
     };
 

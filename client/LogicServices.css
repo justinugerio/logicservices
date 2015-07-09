@@ -26,7 +26,7 @@ th span {
 
 .draggable-task {
     position: absolute;
-    width: 70px;
+    width: 80px;
     height: 36px;
     padding: 7px;
     float: left;
@@ -74,11 +74,12 @@ th span {
 }
 
 .gantt-staging-area {
-    height: 100px;
+    height: 170px;
+    position: relative;
 }
 
 .gantt-staging-area-text {
-    opacity: 0.50;
+    opacity: 0.4;
 }
 
 .selected-engineer {

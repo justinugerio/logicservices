@@ -88,7 +88,7 @@
     <!-- Gantt staging area -->
     <div class="row">
         <div class="col-md-12">
-            <div class="well well-lg gantt-staging-area">
+            <div id="gantt-staging-area-id" class="well well-lg gantt-staging-area">
                 <div class="gantt-staging-area-text"><h3 class="text-center"><strong>Unscheduled Tasks</strong></h3></div>
             </div>
         </div>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="panel-body">
                     <p>Select an Engineer and then click to schedule a Task.</p>
-                    <button id="btn-create-task" class="btn btn-primary btn-block"><strong>Schedule</strong></button>
+                    <button id="btn-create-task" class="btn btn-success center-block"><strong>Schedule</strong></button>
                 </div>
             </div>
         </div>
@@ -113,8 +113,8 @@
                     <h3 class="panel-title">Unschedule Task</h3>
                 </div>
                 <div class="panel-body">
-                    <p>Select Tasks from the Gantt and then click to unschedule.</p>
-                    <button id="btn-create-task" class="btn btn-primary btn-block"><strong>Unschedule</strong></button>
+                    <p>Select Tasks (double-click) from the Gantt and then click to unschedule.</p>
+                    <button id="btn-unschedule-task" class="btn btn-danger center-block"><strong>Unschedule</strong></button>
                 </div>
             </div>
         </div>
@@ -126,7 +126,7 @@
                 </div>
                 <div class="panel-body">
                     <p>Select an Engineer from the Gantt and Tasks from the Unscheduled Area and then click to reschedule.</p>
-                    <button id="btn-unschedule-task" class="btn btn-primary btn-block"><strong>Reschedule</strong></button>
+                    <button id="btn-reschedule-task" class="btn btn-warning center-block"><strong>Reschedule</strong></button>
                 </div>
             </div>
         </div>

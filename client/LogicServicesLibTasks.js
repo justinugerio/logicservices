@@ -11,7 +11,7 @@ LogicServices.TaskManager = (function () {
         // public
         NumTasks              = 0,
         ListTasks               = [],   // array of Task class
-        ListSelectedTasks   = [],   // array of Strings of IDs
+        ListSelectedTasks   = [],   // array of Strings of IDs - 'task-id-x'
 
         // private
         currentTaskCounter = 1;
@@ -22,6 +22,8 @@ LogicServices.TaskManager = (function () {
         // public
         initialize,
         createTask,
+        unscheduleTask,
+        rescheduleTask,
         getTaskByID,
 
         // private
@@ -51,9 +53,8 @@ LogicServices.TaskManager = (function () {
 
             try
             {
-                createTask(currentTaskCounter, selectedEngineer);
-                NumTasks++;
-                currentTaskCounter++;
+                // create task here
+                createTask(selectedEngineer);
             }
             catch (err) {
                 LogicServices.showModalOK('Error Creating Task', err.message);
@@ -61,13 +62,62 @@ LogicServices.TaskManager = (function () {
 
         });
 
+        // initialize unschedule task button event
+        $('#btn-unschedule-task').click(function () {
+
+            // validate at least 1 selected Task
+            if (ListSelectedTasks.length < 1) {
+                LogicServices.showModalOK('Unschedule Task', 'Please select at least one Task.');
+                return;
+            }
+
+            try
+            {
+                // unschedule task here
+                unscheduleTask(ListSelectedTasks);
+            }
+            catch (err) {
+                LogicServices.showModalOK('Error Unscheduling Task', err.message);
+            }
+
+        });
+
+        // initialize reschedule task button event
+        $('#btn-reschedule-task').click(function () {
+
+            var selectedEngineer = LogicServices.EngineerManager.getSelectedEngineerIndex();
+
+            // validate only 1 Engineer selected
+            if (selectedEngineer < 0) {
+                LogicServices.showModalOK('Reschedule Task', 'Please select an Engineer.');
+                return;
+            }
+
+            // validate at least 1 selected Task
+            if (ListSelectedTasks.length < 1) {
+                LogicServices.showModalOK('Unschedule Task', 'Please select at least one Task.');
+                return;
+            }
+
+            try
+            {
+                // reschedule task here
+                rescheduleTask(selectedEngineer, ListSelectedTasks);
+            }
+            catch (err) {
+                LogicServices.showModalOK('Error Rescheduling Task', err.message);
+            }
+
+        });
+
     };
 
     // create task factory method
-    createTask = function (taskNum, engNum) {
+    createTask = function (engNum) {
 
-        var taskID, $task, task, $assignedArea, assignedAreaID;
+        var taskID, $task, task, taskNum, $assignedArea, assignedAreaID;
 
+        taskNum = currentTaskCounter;
         taskID = "task-id-" + taskNum;
         $assignedArea = LogicServices.EngineerManager.ListEngineerSets[engNum].ganttEngArea.$GanttEngineerArea;
         assignedAreaID = $assignedArea.attr('id');
@@ -81,15 +131,13 @@ LogicServices.TaskManager = (function () {
             .resizable({ maxHeight: 36, minHeight: 36 });       // set draggable axis, draggable area, and min/max size
 
         $task.draggable({
-                stop: function () {
+                stop: function () {         // the 'stop' callback is invoked when user stops dragging task
                     var $this = $(this);
                     var id = $this.attr('id');
 
                     if (LogicServices.DEBUG) {
                         console.log('Task ' + id + ' coordinates - Left: ' + $this.position().left + ' Top: ' + $this.position().top);
-                        //$this.css({ left: 0 });
                     }
-
                 }
 
         }); // set event to write left and top coordinates
@@ -112,7 +160,59 @@ LogicServices.TaskManager = (function () {
         task = new Task(taskID, $assignedArea, $task);   // create task object
         ListTasks.push(task);       // add task to list of Task objects
 
+        NumTasks++;     // increment counters
+        currentTaskCounter++;
+
     };
+
+
+    // unschedule tasks from Gantt and place in GanttStagingArea
+    unscheduleTask = function (selectedTasks) {
+        var $task, $taskDetach, task, taskID, $ganttStagingArea, ganttStagingAreaID;
+        var listToRemove = [];
+
+        for (var i=0; i < ListSelectedTasks.length; i++) {
+            taskID = ListSelectedTasks[i];
+            $task = $('#' + taskID);
+            task = getTaskByID(taskID);
+
+            if ($task[0]) {
+                
+                $taskDetach = null;
+                $ganttStagingArea = LogicServices.GanttManager.GanttArea.$GanttStagingArea; // check where task is first
+
+                if (task.$assignedArea.attr('id') == $ganttStagingArea.attr('id')) {    // if already in Gantt Staging Area, then skip
+                    continue;
+                }
+
+                $taskDetach = $task.detach();   // remove from Gantt Area
+
+                $ganttStagingArea.append($taskDetach);  // move to Gantt Staging Area
+                task.$assignedArea = $ganttStagingArea;  // set task to new drag area
+
+                ganttStagingAreaID = $ganttStagingArea.attr('id');
+                $taskDetach.draggable({ axis: 'xy', containment: '#' + ganttStagingAreaID });   // set axes of motion and containment
+
+                $taskDetach.removeClass('selected-task');   // unselect task
+                $taskDetach.css({ 'top': '0px', 'left': '0px'});
+                listToRemove.push($taskDetach);      // mark to remove from Selected Tasks list
+
+            }
+        }
+
+        // remove all marked tasks from Selected Tasks list
+        for (var i=0; i < listToRemove.length; i++) {
+            unselectTask(listToRemove[i]);
+        }
+
+    };
+
+    // reschedule tasks to specified engineer
+    rescheduleTask = function (engNum, selectedTasks) {
+
+
+    };
+
 
     // get Task object by id
     getTaskByID = function (taskID) {

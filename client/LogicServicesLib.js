@@ -12,6 +12,8 @@ LogicServices = (function () {
         // public variables
         DEBUG = true;     // if true, then write to console where "console.log" is coded
 
+        // private variables
+
 
     // function declarations
     var
@@ -21,12 +23,15 @@ LogicServices = (function () {
         showModalOK,
         showModalOKCancel;
 
+        // private functions
+
 
     // functions definitions
     /////////////////////////////////////////////
 
     // initialize
     initialize = function () {
+
 
     };
 
