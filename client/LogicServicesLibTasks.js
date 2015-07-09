@@ -125,10 +125,10 @@ LogicServices.TaskManager = (function () {
         $task = $('<div>');  // create task div
         $task.attr('id', taskID);   // set task dom ID
         $task.addClass('ui-widget-content draggable-task'); // set class as JQuery UI draggable
-        $task.html('<p><strong>' + 'Task ' + taskNum + '</strong></p>');    // set display text value
+        $task.html('<strong class="text-nowrap">' + 'Task ' + taskNum + '</strong>');    // set display text value
 
-        $task.draggable({ axis: 'x', containment: '#' + assignedAreaID })
-            .resizable({ maxHeight: 36, minHeight: 36 });       // set draggable axis, draggable area, and min/max size
+        $task.draggable({ axis: 'x', containment: '#' + assignedAreaID });  // set draggable axis and draggable area
+        $task.resizable({ maxHeight: 36, minHeight: 36 }); // set min/max resize
 
         $task.draggable({
                 stop: function () {         // the 'stop' callback is invoked when user stops dragging task
@@ -157,7 +157,7 @@ LogicServices.TaskManager = (function () {
 
         $assignedArea.append($task);    // add $task to gantt engineer area
 
-        task = new Task(taskID, $assignedArea, $task);   // create task object
+        task = new Task(taskID, $assignedArea);   // create task object
         ListTasks.push(task);       // add task to list of Task objects
 
         NumTasks++;     // increment counters
@@ -171,8 +171,8 @@ LogicServices.TaskManager = (function () {
         var $task, $taskDetach, task, taskID, $ganttStagingArea, ganttStagingAreaID;
         var listToRemove = [];
 
-        for (var i=0; i < ListSelectedTasks.length; i++) {
-            taskID = ListSelectedTasks[i];
+        for (var i=0; i < selectedTasks.length; i++) {
+            taskID = selectedTasks[i];
             $task = $('#' + taskID);
             task = getTaskByID(taskID);
 
@@ -191,25 +191,65 @@ LogicServices.TaskManager = (function () {
                 task.$assignedArea = $ganttStagingArea;  // set task to new drag area
 
                 ganttStagingAreaID = $ganttStagingArea.attr('id');
-                $taskDetach.draggable({ axis: 'xy', containment: '#' + ganttStagingAreaID });   // set axes of motion and containment
+                $taskDetach.draggable( { axis: 'xy', containment: '#' + ganttStagingAreaID } );   // set axes of motion and containment
+                //$taskDetach.resizable( { containment: '#' + ganttStagingAreaID } );  // set containment and max/min for resizing
 
                 $taskDetach.removeClass('selected-task');   // unselect task
-                $taskDetach.css({ 'top': '0px', 'left': '0px'});
+                $taskDetach.css({ 'top': '0px', 'left': '0px'});    // place to top/left as much as possible
                 listToRemove.push($taskDetach);      // mark to remove from Selected Tasks list
 
             }
         }
 
         // remove all marked tasks from Selected Tasks list
-        for (var i=0; i < listToRemove.length; i++) {
-            unselectTask(listToRemove[i]);
+        for (var j=0; j < listToRemove.length; j++) {
+            unselectTask(listToRemove[j]);
         }
 
     };
 
     // reschedule tasks to specified engineer
     rescheduleTask = function (engNum, selectedTasks) {
+        var $task, $taskDetach, task, taskID, $ganttStagingArea,
+                engineerSet, $ganttEngArea, ganttEngAreaID;
+        var listToRemove = [];
 
+        for (var i=0; i < selectedTasks.length; i++) {
+            taskID = selectedTasks[i];
+            $task = $('#' + taskID);
+            task = getTaskByID(taskID);
+
+            if ($task[0]) {
+
+                $taskDetach = null;
+                $ganttStagingArea = LogicServices.GanttManager.GanttArea.$GanttStagingArea; // check where task is first
+
+                if (task.$assignedArea.attr('id') != $ganttStagingArea.attr('id')) {    // if not in Gantt Staging Area, then skip
+                    continue;
+                }
+
+                $taskDetach = $task.detach();   // remove from Gantt Staging Area
+
+                engineerSet = LogicServices.EngineerManager.getEngineerSetByIndex(engNum);  // get selected Engineer Set object
+                $ganttEngArea = engineerSet.ganttEngArea.$GanttEngineerArea;    // get $GanttEngineerArea jqobject
+                $ganttEngArea.append($taskDetach);  // move to Gantt Engineer Area
+                task.$assignedArea = $ganttEngArea;  // set task to new drag area
+
+                ganttEngAreaID = $ganttEngArea.attr('id');
+                $taskDetach.draggable({ axis: 'x', containment: '#' + ganttEngAreaID });   // set axes of motion and containment
+                //$taskDetach.resizable( { containment: '#' + ganttEngAreaID } );  // set containment and max/min for resizing
+
+                $taskDetach.removeClass('selected-task');   // unselect task
+                $taskDetach.css({ 'top': '0px', 'left': '0px'});    // schedule to top/left as much as possible
+                listToRemove.push($taskDetach);      // mark to remove from Selected Tasks list
+
+            }
+        }
+
+        // remove all marked tasks from Selected Tasks list
+        for (var j=0; j < listToRemove.length; j++) {
+            unselectTask(listToRemove[j]);
+        }
 
     };
 
@@ -245,10 +285,9 @@ LogicServices.TaskManager = (function () {
     };
 
     // Task Class
-    Task = function (taskID, assignedArea, jqObject) {
+    Task = function (taskID, assignedArea) {
         this.taskID = taskID;
         this.$assignedArea = assignedArea;
-        this.$task = jqObject;
     };
 
 
