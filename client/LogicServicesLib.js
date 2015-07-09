@@ -32,6 +32,10 @@ LogicServices = (function () {
     // initialize
     initialize = function () {
 
+        // Clear All click event handler
+        $('#btn-clear-tasks').click(function () {
+            LogicServices.TaskManager.clearAllTasks();
+        });
 
     };
 

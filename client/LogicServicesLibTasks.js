@@ -25,6 +25,7 @@ LogicServices.TaskManager = (function () {
         unscheduleTask,
         rescheduleTask,
         getTaskByID,
+        clearAllTasks,
 
         // private
         selectTask,
@@ -291,6 +292,24 @@ LogicServices.TaskManager = (function () {
     };
 
 
+    // clear all tasks by removing task and resetting counters
+    clearAllTasks = function () {
+
+        var task, $task;
+
+        for (var i=0; i < ListTasks.length; i++) {
+            task = ListTasks[i];
+            $task = $('#' + task.taskID).remove();
+        }
+
+        ListTasks = [];
+        ListSelectedTasks = [];
+        NumTasks = 0;
+        currentTaskCounter = 1;
+
+    };
+
+
     // return object
     /////////////////////////////////////////////
     return {
@@ -299,7 +318,8 @@ LogicServices.TaskManager = (function () {
         ListTasks: ListTasks,
         initialize: initialize,
         createTask: createTask,
-        getTaskByID: getTaskByID
+        getTaskByID: getTaskByID,
+        clearAllTasks: clearAllTasks
 
     };
 
