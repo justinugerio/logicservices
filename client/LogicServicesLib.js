@@ -21,7 +21,9 @@ LogicServices = (function () {
         initialize,
         convertToTwoDigitString,
         showModalOK,
-        showModalOKCancel;
+        showModalOKCancel,
+        rearrangeSchedule,
+        scheduleReshuffle;
 
         // private functions
 
@@ -32,9 +34,21 @@ LogicServices = (function () {
     // initialize
     initialize = function () {
 
+        /// initialize button event handlers
+
         // Clear All click event handler
         $('#btn-clear-tasks').click(function () {
             LogicServices.TaskManager.clearAllTasks();
+        });
+
+        // Schedule Update - Rearrange Schedule click event handler
+        $('#btn-rearrange-schedule').click(function () {
+            rearrangeSchedule();
+        });
+
+        // Scheduling Workflow - Schedule & Reshuffle click event handler
+        $('#btn-schedule-reshuffle').click(function () {
+            scheduleReshuffle();
         });
 
     };
@@ -91,6 +105,33 @@ LogicServices = (function () {
         });
     };
 
+    // Rearrange Schedule by operating on selected Engineer and rearranging schedule based on current position of Timeline
+    rearrangeSchedule = function () {
+
+        //alert('Under Construction!');
+
+        // validate selected engineer
+
+        // get 'left' position of timeline
+
+        // get all task assigned to engineer
+
+        // sort tasks by 'left' position
+
+        // place tasks starting with 'left' position of timeline on engineer gantt area
+
+        // unschedule all other tasks that don't fit
+
+
+    };
+
+    // Schedule and Reshuffle by attempting to schedule task and move other tasks around
+    scheduleReshuffle = function () {
+
+        alert('Under Construction!');
+
+    };
+
 
     // return object
     /////////////////////////////////////////////
@@ -103,11 +144,11 @@ LogicServices = (function () {
         initialize: initialize,
         showModalOK: showModalOK,
         showModalOKCancel: showModalOKCancel,
-        convertToTwoDigitString: convertToTwoDigitString
+        convertToTwoDigitString: convertToTwoDigitString,
+        rearrangeSchedule: rearrangeSchedule,
+        scheduleReshuffle: scheduleReshuffle
 
     };
 
 }) ();
-
-
 
