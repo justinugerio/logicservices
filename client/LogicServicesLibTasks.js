@@ -131,8 +131,13 @@ LogicServices.TaskManager = (function () {
         $task.addClass('ui-widget-content draggable-task'); // set class as JQuery UI draggable
         $task.html('<strong class="text-nowrap">' + 'Task ' + taskNum + '</strong>');    // set display text value
 
-        $task.draggable({ axis: 'x', containment: '#' + assignedAreaID });  // set draggable axis and draggable area
-        $task.resizable({ maxHeight: 36, minHeight: 36 }); // set min/max resize
+        $task.draggable({   distance: 10,
+                                        revert: "invalid",
+                                        axis: 'x',
+                                        containment: '#' + assignedAreaID });  // set draggable axis and draggable area
+
+        $task.resizable({ maxHeight: 36,
+                                    minHeight: 36 }); // set min/max resize
 
         $task.draggable({
                 stop: function () {         // the 'stop' callback is invoked when user stops dragging task
@@ -147,7 +152,7 @@ LogicServices.TaskManager = (function () {
         }); // set event to write left and top coordinates
 
         // event for click to highlight selected task
-        $task.dblclick(function() {     // click or dblclick
+        $task.click(function() {     // click or dblclick
             $(this).toggleClass('selected-task');
 
             if ($(this).hasClass('selected-task')) {
@@ -195,7 +200,11 @@ LogicServices.TaskManager = (function () {
                 task.$assignedArea = $ganttStagingArea;  // set task to new drag area
 
                 ganttStagingAreaID = $ganttStagingArea.attr('id');
-                $taskDetach.draggable( { axis: 'xy', containment: '#' + ganttStagingAreaID } );   // set axes of motion and containment
+
+                $taskDetach.draggable( {  axis: 'xy',
+                                                            containment: false // '#' + ganttStagingAreaID
+                                                        } );   // set axes of motion and containment
+
                 //$taskDetach.resizable( { containment: '#' + ganttStagingAreaID } );  // set containment and max/min for resizing
 
                 $taskDetach.removeClass('selected-task');   // unselect task

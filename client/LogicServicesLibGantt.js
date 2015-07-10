@@ -51,7 +51,8 @@ LogicServices.GanttManager = (function () {
         initGanttEngineerAreas,
         getGanttOffset,
         getColumnOffset,
-        addTimeline;
+        addTimeline,
+        rescheduleTask;
 
 
     // functions
@@ -71,6 +72,9 @@ LogicServices.GanttManager = (function () {
 
         // get Gantt Staging Area
         GanttArea.$GanttStagingArea = $('#gantt-staging-area-id');
+
+        // set as droppable target
+        GanttArea.$GanttStagingArea.droppable( { tolerance: "fit"});    // tasks have to fully fit within $GanttStagingArea
 
     };
 
@@ -176,7 +180,7 @@ LogicServices.GanttManager = (function () {
     initGanttEngineerAreas = function () {
 
         var container = $('#' + ganttAreaID);
-        var ganttEngineerArea, ganttEngineerAreaObj, ganttOffset, count;
+        var $ganttEngineerArea, ganttEngineerAreaObj, ganttOffset, count;
 
         if (!container) {
             return;
@@ -188,20 +192,40 @@ LogicServices.GanttManager = (function () {
 
             count = LogicServices.convertToTwoDigitString(i + 1);
 
-            ganttEngineerArea = $('<div>').addClass('gantt-engineer-area');
-            ganttEngineerArea.attr('id', ganttEngineerAreaIDPrefix + count);
+            $ganttEngineerArea = $('<div>').addClass('gantt-engineer-area');
+            $ganttEngineerArea.attr('id', ganttEngineerAreaIDPrefix + count);
 
-            ganttEngineerArea.css({
+            $ganttEngineerArea.css({
                 'height': ganttOffset.y + 'px',
                 'top': ((ganttOffset.y - 1) * i) + 'px'
             });
 
-            container.append(ganttEngineerArea);
+            $ganttEngineerArea.droppable( {         // set as droppable target
+                tolerance: "fit",                               // task must fully fit in ganttEngArea
+                drop: function (event, ui) {
+                    rescheduleTask($(this), ui.draggable);
+                } } );
 
-            ganttEngineerAreaObj = new GanttEngineerArea(ganttEngineerArea);
+            container.append($ganttEngineerArea);
+
+            ganttEngineerAreaObj = new GanttEngineerArea($ganttEngineerArea);
             GanttArea.ListGanttEngAreas.push(ganttEngineerAreaObj);
 
         }
+    };
+
+    // reschedule task to GanttEngArea from drag & drop
+    rescheduleTask = function ($ganttEngArea, $task) {
+        //alert($ganttEngArea.attr('id') + ' ' + $task.attr('id'));
+        var task;
+
+        $task.draggable({   axis: 'x',
+                                        containment: '#' + $ganttEngArea.attr('id')
+                                    });
+
+        task = LogicServices.TaskManager.getTaskByID($task.attr('id'));
+        task.$assignedArea = $ganttEngArea;
+
     };
 
     // returns the x and y offset for the Gantt area, as object { x: xVal, y: yVal }
