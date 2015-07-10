@@ -26,10 +26,13 @@ LogicServices.TaskManager = (function () {
         rescheduleTask,
         getTaskByID,
         clearAllTasks,
+        getTasksAssignedToEng,
+        sortTasksByPosLeft,
 
         // private
         selectTask,
         unselectTask,
+        getIndexOfLowestPosLeft,
 
         // Class
         Task;
@@ -143,11 +146,13 @@ LogicServices.TaskManager = (function () {
                                  minHeight: height
                              }); // set min/max resize
 
+        /* // action when task is re-sized
         $task.resizable({
             resize: function( event, ui ) {
-                //event.stopPropagation();
+                event.stopImmediatePropagation();
             }
         });
+        */
 
         $task.css({
             height: height + 'px'
@@ -180,7 +185,7 @@ LogicServices.TaskManager = (function () {
 
         $assignedArea.append($task);    // add $task to gantt engineer area
 
-        task = new Task(taskNum, taskID, $assignedArea);   // create task object
+        task = new Task(taskID, $task, $assignedArea);   // create task object
         ListTasks.push(task);       // add task to list of Task objects
 
         NumTasks++;     // increment counters
@@ -331,11 +336,82 @@ LogicServices.TaskManager = (function () {
 
     };
 
+    // return array of Task objects assigned to specified Engineer Index
+    getTasksAssignedToEng = function (engIndex) {
+        var taskArray = [], engineerSet, $ganttEngArea, ganttEngAreaID,
+              $taskGanttEngArea;
+
+        engineerSet = LogicServices.EngineerManager.getEngineerSetByIndex(engIndex);
+        $ganttEngArea = engineerSet.$ganttEngArea;
+        ganttEngAreaID = $ganttEngArea.attr('id');  // get ganttEngAreaID of specified eng index
+
+        for (var i=0; i < ListTasks.length; i++) {
+            $taskGanttEngArea = ListTasks[i].$assignedArea;
+
+            if ($taskGanttEngArea.attr('id') == ganttEngAreaID) { // if task ganttEngArea matches
+                taskArray.push(ListTasks[i]);
+            }
+        }
+
+        return taskArray;
+    };
+
+    // sorts elements in taskArray by position left, returns sorted array
+    sortTasksByPosLeft = function (taskArray) {
+
+        var task, sortedArray = [], lowestIndex;
+
+        while (taskArray.length > 0) {
+
+            // find minimum index in task array
+            lowestIndex = getIndexOfLowestPosLeft(taskArray);
+            task = taskArray[lowestIndex];
+
+            // pop task of index from task array
+            taskArray.splice(lowestIndex, 1);
+
+            // push popped task into sortedArray
+            sortedArray.push(task);
+
+        }
+
+        return sortedArray;
+
+    };
+
+    // get the index of element with lowest left position
+    getIndexOfLowestPosLeft = function (taskArray) {
+
+        var lowestIndex = -1, leftValue, lowestLeftValue;
+
+        if (taskArray.length == 0) {
+            return lowestIndex;
+        }
+
+        if (taskArray.length == 1) {
+            return 0;
+        }
+
+        lowestIndex = 0;
+        lowestLeftValue = taskArray[lowestIndex].$task.position().left;
+
+        for (var i=0; i < taskArray.length; i++) {
+            leftValue = taskArray[i].$task.position().left;
+
+            if (leftValue < lowestLeftValue) {
+                lowestIndex = i;
+            }
+        }
+
+        return lowestIndex;
+
+    };
+
     ////////////////////////////////////////////////////////////////////////
     // Task class
-    Task = function (taskNum, taskID, assignedArea) {
-        this.taskNum = taskNum;
+    Task = function (taskID, task, assignedArea) {
         this.taskID = taskID;
+        this.$task = task;
         this.$assignedArea = assignedArea;
     };
 
@@ -349,7 +425,9 @@ LogicServices.TaskManager = (function () {
         initialize: initialize,
         createTask: createTask,
         getTaskByID: getTaskByID,
-        clearAllTasks: clearAllTasks
+        clearAllTasks: clearAllTasks,
+        getTasksAssignedToEng: getTasksAssignedToEng,
+        sortTasksByPosLeft: sortTasksByPosLeft
 
     };
 

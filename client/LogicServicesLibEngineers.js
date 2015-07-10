@@ -127,6 +127,7 @@ LogicServices.EngineerManager = (function () {
         this.engName = engName;
         this.$engTableHead = engTableHead;
         this.ganttEngArea = ganttEngArea;
+        this.$ganttEngArea = ganttEngArea.$GanttEngineerArea;
 
     };
 
