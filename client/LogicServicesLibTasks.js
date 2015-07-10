@@ -119,12 +119,13 @@ LogicServices.TaskManager = (function () {
     // create task factory method
     createTask = function (engNum) {
 
-        var taskID, $task, task, taskNum, $assignedArea, assignedAreaID;
+        var taskID, $task, task, taskNum, $assignedArea, assignedAreaID, height;
 
         taskNum = currentTaskCounter;
         taskID = "task-id-" + taskNum;
         $assignedArea = LogicServices.EngineerManager.ListEngineerSets[engNum].ganttEngArea.$GanttEngineerArea;
         assignedAreaID = $assignedArea.attr('id');
+        height = $assignedArea.innerHeight();
 
         $task = $('<div>');  // create task div
         $task.attr('id', taskID);   // set task dom ID
@@ -132,12 +133,25 @@ LogicServices.TaskManager = (function () {
         $task.html('<strong class="text-nowrap">' + 'Task ' + taskNum + '</strong>');    // set display text value
 
         $task.draggable({   distance: 10,
-                                        revert: "invalid",
-                                        axis: 'x',
-                                        containment: '#' + assignedAreaID });  // set draggable axis and draggable area
+                                   snap: '.gantt-engineer-area',
+                                   snapMode: 'inner',
+                                   revert: 'invalid',
+                                   axis: 'x',
+                                   containment: '#' + assignedAreaID });  // set draggable axis and draggable area
 
-        $task.resizable({ maxHeight: 36,
-                                    minHeight: 36 }); // set min/max resize
+        $task.resizable({   maxHeight: height,
+                                 minHeight: height
+                             }); // set min/max resize
+
+        $task.resizable({
+            resize: function( event, ui ) {
+                //event.stopPropagation();
+            }
+        });
+
+        $task.css({
+            height: height + 'px'
+        });
 
         $task.draggable({
                 stop: function () {         // the 'stop' callback is invoked when user stops dragging task
@@ -208,7 +222,7 @@ LogicServices.TaskManager = (function () {
                 //$taskDetach.resizable( { containment: '#' + ganttStagingAreaID } );  // set containment and max/min for resizing
 
                 $taskDetach.removeClass('selected-task');   // unselect task
-                $taskDetach.css({ 'top': '0px', 'left': '0px'});    // place to top/left as much as possible
+                $taskDetach.css({ top: '0px', left: '0px'});    // place to top/left as much as possible
                 listToRemove.push($taskDetach);      // mark to remove from Selected Tasks list
 
             }
@@ -253,7 +267,7 @@ LogicServices.TaskManager = (function () {
                 //$taskDetach.resizable( { containment: '#' + ganttEngAreaID } );  // set containment and max/min for resizing
 
                 $taskDetach.removeClass('selected-task');   // unselect task
-                $taskDetach.css({ 'top': '0px', 'left': '0px'});    // schedule to top/left as much as possible
+                $taskDetach.css({ top: '0px', left: '0px'});    // schedule to top/left as much as possible
                 listToRemove.push($taskDetach);      // mark to remove from Selected Tasks list
 
             }

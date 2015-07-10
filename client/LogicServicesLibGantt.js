@@ -161,10 +161,10 @@ LogicServices.GanttManager = (function () {
         ganttAreaDiv.attr('id', ganttAreaID);
 
         ganttAreaDiv.css({
-            'left': (ganttOffsetX + ganttAreaBuffer.leftBuffer) + 'px',
-            'top': (ganttOffsetY + ganttAreaBuffer.topBuffer) + 'px',
-            'width': ((columnOffset * numHours) + ganttAreaBuffer.widthBuffer) + 'px',
-            'height': ((ganttOffsetY * numEngineers) + ganttAreaBuffer.heightBuffer) + 'px'
+            left: (ganttOffsetX + ganttAreaBuffer.leftBuffer) + 'px',
+            top: (ganttOffsetY + ganttAreaBuffer.topBuffer) + 'px',
+            width: ((columnOffset * numHours) + ganttAreaBuffer.widthBuffer) + 'px',
+            height: ((ganttOffsetY * numEngineers) + ganttAreaBuffer.heightBuffer) + 'px'
         });
 
         ganttContainer.append(ganttAreaDiv);
@@ -196,8 +196,8 @@ LogicServices.GanttManager = (function () {
             $ganttEngineerArea.attr('id', ganttEngineerAreaIDPrefix + count);
 
             $ganttEngineerArea.css({
-                'height': ganttOffset.y + 'px',
-                'top': ((ganttOffset.y - 1) * i) + 'px'
+                height: ganttOffset.y + 'px',
+                top: ((ganttOffset.y - 1) * i) + 'px'
             });
 
             $ganttEngineerArea.droppable( {         // set as droppable target
@@ -285,9 +285,9 @@ LogicServices.GanttManager = (function () {
         leftBuffer = 0;
         topBuffer = -1;
         $timeline.css({
-            'left': leftBuffer,
-            'top': topBuffer,
-            'height': ((ganttOffset.y - 1) * numEngineers) + 1 + 'px'
+            left: leftBuffer,
+            top: topBuffer,
+            height: ((ganttOffset.y - 1) * numEngineers) + 1 + 'px'
         });
 
         container.append($timeline); // add timeline to gantt area container
