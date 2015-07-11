@@ -393,10 +393,10 @@ LogicServices.TaskManager = (function () {
         }
 
         lowestIndex = 0;
-        lowestLeftValue = taskArray[lowestIndex].$task.position().left;
+        lowestLeftValue = taskArray[lowestIndex].$task.css('left');  // instead of $task.position().left
 
         for (var i=0; i < taskArray.length; i++) {
-            leftValue = taskArray[i].$task.position().left;
+            leftValue = taskArray[i].$task.css('left'); // instead of $task.position().left
 
             if (leftValue < lowestLeftValue) {
                 lowestIndex = i;

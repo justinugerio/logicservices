@@ -157,13 +157,18 @@ LogicServices = (function () {
         for (var i=0; i < taskArray.length; i++) {
             task = taskArray[i];
             $task = task.$task;
-            taskPosition = $task.position().left;
+
+            ///taskPosition = $task.position().left;
+            taskPosition = $task.css('left');
+
             taskWidth = $task.outerWidth();
 
             if ((currSpace - taskWidth) > 0) {
                 $task.css({ left: currPos });
 
                 //alert('CurrPos ' + currPos + ' Left: ' + $task.position().left);
+                //alert('CurrPos ' + currPos + ' OldLeft: ' + taskPosition + ' NewLeft: ' + $task.css('left'));
+
                 //currPos = currPos + taskWidth;
                 //currSpace = currSpace - currPos;
             }
