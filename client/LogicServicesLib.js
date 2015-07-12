@@ -145,6 +145,9 @@ LogicServices = (function () {
         // unschedule all other tasks that don't fit
         if (stopIndex < (sortedTaskArray.length - 1)) {
             alert('Unschedule ' + (sortedTaskArray.length - stopIndex) + ' tasks');
+
+            // unschedule tasks
+            
         }
 
     };
