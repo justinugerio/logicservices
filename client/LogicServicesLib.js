@@ -144,7 +144,7 @@ LogicServices = (function () {
 
         // unschedule all other tasks that don't fit
         if (stopIndex < (sortedTaskArray.length - 1)) {
-            alert('Unschedule ' + ((sortedTaskArray.length - 1) - stopIndex) + ' tasks');
+            alert('Unschedule ' + (sortedTaskArray.length - stopIndex) + ' tasks');
         }
 
     };
@@ -152,7 +152,7 @@ LogicServices = (function () {
     // place tasks on eng gantt area starting at timeline up to end of eng gantt are space
     rearrangeTasks = function (timelinePos, scheduleSpace, taskArray) {
         var task, $task, taskPosition, taskWidth,
-              currPos = timelinePos, currSpace = scheduleSpace;
+              currSpace = scheduleSpace;
 
         for (var i=0; i < taskArray.length; i++) {
             task = taskArray[i];
@@ -164,13 +164,13 @@ LogicServices = (function () {
             taskWidth = $task.outerWidth();
 
             if ((currSpace - taskWidth) > 0) {
-                $task.css({ left: currPos });
+                $task.css({ left: timelinePos });
 
                 //alert('CurrPos ' + currPos + ' Left: ' + $task.position().left);
                 //alert('CurrPos ' + currPos + ' OldLeft: ' + taskPosition + ' NewLeft: ' + $task.css('left'));
 
-                //currPos = currPos + taskWidth;
-                //currSpace = currSpace - currPos;
+                //currPos = currPos + taskWidth;    // no need to advance currPos since setting css left position will not overlap
+                currSpace = currSpace - taskWidth;
             }
             else {
                 return i;   // return index where it can't schedule
