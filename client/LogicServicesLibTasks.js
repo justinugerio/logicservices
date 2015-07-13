@@ -424,6 +424,8 @@ LogicServices.TaskManager = (function () {
         ListTasks: ListTasks,
         initialize: initialize,
         createTask: createTask,
+        unscheduleTask: unscheduleTask,
+        rescheduleTask: rescheduleTask,
         getTaskByID: getTaskByID,
         clearAllTasks: clearAllTasks,
         getTasksAssignedToEng: getTasksAssignedToEng,
