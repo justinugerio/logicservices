@@ -25,6 +25,7 @@ LogicServices.TaskManager = (function () {
         constructTask,
         unscheduleTask,
         rescheduleTask,
+        rescheduleTaskDragAndDrop,
         getTaskByID,
         clearAllTasks,
         getTasksAssignedToEng,
@@ -33,6 +34,7 @@ LogicServices.TaskManager = (function () {
         // private
         selectTask,
         unselectTask,
+        isSelectTask,
         getIndexOfLowestPosLeft,
 
         // Class
@@ -162,8 +164,22 @@ LogicServices.TaskManager = (function () {
             axis: 'x',
             containment: '#' + assignedAreaID });  // set draggable axis and draggable area
 
-        $task.resizable({   maxHeight: height,
-            minHeight: height
+        $task.resizable({
+            maxHeight: height,
+            minHeight: height,
+
+            stop: function (event, ui) {
+                var $this = $(this);
+                var id = $this.attr('id');
+                var task = getTaskByID(id);
+
+                task.width = ui.size.width;
+
+                if (LogicServices.DEBUG) {
+                    console.log('Task ' + id + ' Width: ' + task.width);
+                }
+            }
+
         }); // set min/max resize
 
         $task.css({
@@ -303,6 +319,43 @@ LogicServices.TaskManager = (function () {
     };
 
 
+    // reschedule task to GanttEngArea from drag & drop
+    rescheduleTaskDragAndDrop = function ($ganttEngArea, $task) {
+        //alert($ganttEngArea.attr('id') + ' ' + $task.attr('id'));
+        var $newTask, task, assignedAreaID, taskWidth, dropPositionLeft, isSelected;
+
+        task = LogicServices.TaskManager.getTaskByID($task.attr('id'));
+        assignedAreaID = task.$assignedArea.attr('id');
+
+        if (assignedAreaID == 'gantt-staging-area-id') {
+
+            dropPositionLeft = $task.offset().left - $ganttEngArea.offset().left;   // task.offset.left - ganttengarea.offset.left => offset is global location from window
+
+            taskWidth = task.width;
+            isSelected = isSelectTask($task);
+            $task.remove(); // remove old task
+
+            // create new one and replace it
+            $newTask = LogicServices.TaskManager.constructTask(task.taskNum, $ganttEngArea.attr('id'));
+            $newTask.css('width', taskWidth);
+            $newTask.css('left', dropPositionLeft);
+
+            if (isSelected) {
+                $newTask.addClass('selected-task');
+            }
+
+            // set task properties
+            task.$task = $newTask;
+            task.$assignedArea = $ganttEngArea;
+            task.posLeft = dropPositionLeft;
+
+            $ganttEngArea.append($newTask); // add it to ganttEngArea
+
+        }
+
+    };
+
+
     // get Task object by id
     getTaskByID = function (taskID) {
 
@@ -331,6 +384,15 @@ LogicServices.TaskManager = (function () {
         if (indexInList > -1) {
             ListSelectedTasks.splice(indexInList, 1);
         }
+    };
+
+    // returns boolean if task is selected
+    isSelectTask = function($task) {
+        var taskID = $task.attr('id');
+        var indexInList = ListSelectedTasks.indexOf(taskID);
+
+        return indexInList > -1;
+
     };
 
     // clear all tasks by removing task and resetting counters
@@ -449,6 +511,7 @@ LogicServices.TaskManager = (function () {
         constructTask: constructTask,
         unscheduleTask: unscheduleTask,
         rescheduleTask: rescheduleTask,
+        rescheduleTaskDragAndDrop: rescheduleTaskDragAndDrop,
         getTaskByID: getTaskByID,
         clearAllTasks: clearAllTasks,
         getTasksAssignedToEng: getTasksAssignedToEng,
