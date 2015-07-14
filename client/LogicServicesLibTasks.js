@@ -135,12 +135,14 @@ LogicServices.TaskManager = (function () {
         $task.addClass('ui-widget-content draggable-task'); // set class as JQuery UI draggable
         $task.html('<strong class="text-nowrap">' + 'Task ' + taskNum + '</strong>');    // set display text value
 
+        
         $task.draggable({   distance: 10,
                                    snap: '.gantt-engineer-area',
                                    snapMode: 'inner',
                                    revert: 'invalid',
                                    axis: 'x',
                                    containment: '#' + assignedAreaID });  // set draggable axis and draggable area
+
 
         $task.resizable({   maxHeight: height,
                                  minHeight: height

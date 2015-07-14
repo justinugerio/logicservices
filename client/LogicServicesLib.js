@@ -10,7 +10,7 @@ LogicServices = (function () {
     // variable declarations
     var
         // public variables
-        DEBUG = true;     // if true, then write to console where "console.log" is coded
+        DEBUG = false;     // if true, then write to console where "console.log" is coded
 
         // private variables
 
@@ -140,7 +140,7 @@ LogicServices = (function () {
 
         // sort tasks by 'left' position
         /// do not sort because the 'left' position doesn't seem to be correct
-        ///sortedTaskArray = LogicServices.TaskManager.sortTasksByPosLeft(taskArray);
+        //taskArray = LogicServices.TaskManager.sortTasksByPosLeft(taskArray);
 
         // place tasks starting with 'left' position of timeline on engineer gantt area
         stopIndex = rearrangeTasks(timelinePosLeft, scheduleSpaceWidth, taskArray); // use taskArray instead of sortedTaskArray
@@ -148,7 +148,7 @@ LogicServices = (function () {
         // unschedule all other tasks that don't fit
         if (stopIndex < taskArray.length) {
 
-            LogicServices.showModalOK('Rearrange Schedule', 'Unscheduling ' + (taskArray.length - stopIndex) + ' tasks')
+            LogicServices.showModalOK('Rearrange Schedule', 'Unscheduling ' + (taskArray.length - stopIndex) + ' tasks');
 
             // add to unschedule task list
             for (var i=stopIndex; i < taskArray.length; i++) {
@@ -164,23 +164,17 @@ LogicServices = (function () {
 
     // place tasks on eng gantt area starting at timeline up to end of eng gantt are space
     rearrangeTasks = function (timelinePos, scheduleSpace, taskArray) {
-        var task, $task, taskPosition, taskWidth,
+        var task, $task, taskWidth,
               currSpace = scheduleSpace;
 
         for (var i=0; i < taskArray.length; i++) {
             task = taskArray[i];
             $task = task.$task;
 
-            ///taskPosition = $task.position().left;
-            taskPosition = $task.css('left');
-
             taskWidth = $task.outerWidth();
 
             if ((currSpace - taskWidth) > 0) {
                 $task.css({ left: timelinePos });
-
-                //alert('CurrPos ' + currPos + ' Left: ' + $task.position().left);
-                //alert('CurrPos ' + currPos + ' OldLeft: ' + taskPosition + ' NewLeft: ' + $task.css('left'));
 
                 //currPos = currPos + taskWidth;    // no need to advance currPos since setting css left position will not overlap
                 currSpace = currSpace - taskWidth;
