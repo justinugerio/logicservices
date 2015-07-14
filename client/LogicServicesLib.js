@@ -147,7 +147,7 @@ LogicServices = (function () {
             alert('Unschedule ' + (sortedTaskArray.length - stopIndex) + ' tasks');
 
             // unschedule tasks
-            
+
         }
 
     };
