@@ -10,7 +10,7 @@ LogicServices = (function () {
     // variable declarations
     var
         // public variables
-        DEBUG = false;     // if true, then write to console where "console.log" is coded
+        DEBUG = true;     // if true, then write to console where "console.log" is coded
 
         // private variables
 
@@ -114,7 +114,7 @@ LogicServices = (function () {
         var selectedEngineerIndex, engineerSet, $ganttEngArea, ganttEngAreaWidth,
               $timeline, timelinePosLeft, scheduleSpaceWidth,
               //sortedTaskArray,
-              taskArray, stopIndex,
+              taskArray, sortedTaskArray, stopIndex,
               unscheduleTaskArray = [];
 
         // validate selected engineer
@@ -139,20 +139,19 @@ LogicServices = (function () {
         taskArray = LogicServices.TaskManager.getTasksAssignedToEng(selectedEngineerIndex);
 
         // sort tasks by 'left' position
-        /// do not sort because the 'left' position doesn't seem to be correct
-        //taskArray = LogicServices.TaskManager.sortTasksByPosLeft(taskArray);
+        sortedTaskArray = LogicServices.TaskManager.sortTasksByPosLeft(taskArray);
 
         // place tasks starting with 'left' position of timeline on engineer gantt area
-        stopIndex = rearrangeTasks(timelinePosLeft, scheduleSpaceWidth, taskArray); // use taskArray instead of sortedTaskArray
+        stopIndex = rearrangeTasks(timelinePosLeft, scheduleSpaceWidth, sortedTaskArray); // use taskArray instead of sortedTaskArray
 
         // unschedule all other tasks that don't fit
-        if (stopIndex < taskArray.length) {
+        if (stopIndex < sortedTaskArray.length) {
 
-            LogicServices.showModalOK('Rearrange Schedule', 'Unscheduling ' + (taskArray.length - stopIndex) + ' tasks');
+            LogicServices.showModalOK('Rearrange Schedule', 'Unscheduling ' + (sortedTaskArray.length - stopIndex) + ' tasks');
 
             // add to unschedule task list
-            for (var i=stopIndex; i < taskArray.length; i++) {
-                unscheduleTaskArray.push(taskArray[i].taskID);
+            for (var i=stopIndex; i < sortedTaskArray.length; i++) {
+                unscheduleTaskArray.push(sortedTaskArray[i].taskID);
             }
 
             // unschedule tasks in list
@@ -165,18 +164,27 @@ LogicServices = (function () {
     // place tasks on eng gantt area starting at timeline up to end of eng gantt are space
     rearrangeTasks = function (timelinePos, scheduleSpace, taskArray) {
         var task, $task, taskWidth,
-              currSpace = scheduleSpace;
+              currSpace = scheduleSpace,
+              currPos = timelinePos;
+
+        for (var j=0; j < taskArray.length; j++) {
+            task = taskArray[j];
+            $task = task.$task;
+            $task.css('position', 'static');
+            $task.css( {left: 0, top: 0} );
+        }
 
         for (var i=0; i < taskArray.length; i++) {
             task = taskArray[i];
             $task = task.$task;
 
             taskWidth = $task.outerWidth();
+            $task.css('position', 'absolute');
 
             if ((currSpace - taskWidth) > 0) {
-                $task.css({ left: timelinePos });
+                $task.css({ left: currPos });
 
-                //currPos = currPos + taskWidth;    // no need to advance currPos since setting css left position will not overlap
+                currPos = currPos + taskWidth;    // no need to advance currPos since setting css left position will not overlap
                 currSpace = currSpace - taskWidth;
             }
             else {
