@@ -170,7 +170,7 @@ LogicServices = (function () {
         for (var j=0; j < taskArray.length; j++) {
             task = taskArray[j];
             $task = task.$task;
-            $task.css('position', 'static');
+            $task.css('position', 'static');    // reset positions to clear and correct
             $task.css( {left: 0, top: 0} );
         }
 
@@ -179,13 +179,13 @@ LogicServices = (function () {
             $task = task.$task;
 
             taskWidth = $task.outerWidth();
-            $task.css('position', 'absolute');
+            $task.css('position', 'absolute');  // set back to absolute
 
             if ((currSpace - taskWidth) > 0) {
                 $task.css({ left: currPos });
 
-                currPos = currPos + taskWidth;    // no need to advance currPos since setting css left position will not overlap
-                currSpace = currSpace - taskWidth;
+                currPos = currPos + taskWidth;    // advance currPos
+                currSpace = currSpace - taskWidth;  // shrink currSpace
             }
             else {
                 return i;   // return index where it can't schedule

@@ -217,14 +217,29 @@ LogicServices.GanttManager = (function () {
     // reschedule task to GanttEngArea from drag & drop
     rescheduleTask = function ($ganttEngArea, $task) {
         //alert($ganttEngArea.attr('id') + ' ' + $task.attr('id'));
-        var task;
-
-        $task.draggable({   axis: 'x',
-                                        containment: '#' + $ganttEngArea.attr('id')
-                                    });
+        var $newTask, task, assignedAreaID;
 
         task = LogicServices.TaskManager.getTaskByID($task.attr('id'));
-        task.$assignedArea = $ganttEngArea;
+        assignedAreaID = task.$assignedArea.attr('id');
+
+        if (assignedAreaID == 'gantt-staging-area-id') {
+
+            $task.remove(); // remove old task
+
+            // create new one and replace it
+            $newTask = LogicServices.TaskManager.constructTask(task.taskNum, $ganttEngArea.attr('id'));
+            task.$task = $newTask;
+            task.$assignedArea = $ganttEngArea;
+
+            $ganttEngArea.append($newTask); // add it to ganttEngArea
+
+            //////////////////////////////////
+            ///////// TO DO ////////////
+            ////// 1. Move this to Tasks file
+            ////// 2. For Task object, preserve current width so that we can recreate task with same width
+            /////////////////////////////////
+
+        }
 
     };
 

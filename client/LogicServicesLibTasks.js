@@ -134,7 +134,7 @@ LogicServices.TaskManager = (function () {
 
         $assignedArea.append($task);    // add $task to gantt engineer area
 
-        task = new Task($task.attr('id'), $task, $assignedArea);   // create task object
+        task = new Task(taskNum, $task.attr('id'), $task, $assignedArea);   // create task object
         $task.css({ left: task.posLeft, top: task.posTop });    // set left and top default positions
         ListTasks.push(task);       // add task to list of Task objects
 
@@ -175,9 +175,18 @@ LogicServices.TaskManager = (function () {
                 var $this = $(this);
                 var id = $this.attr('id');
                 var task = getTaskByID(id);
+                var $ganttEngArea = task.$assignedArea;
+                var ganttEngAreaID = $ganttEngArea.attr('id');
 
-                task.posLeft = $this.position().left;
-                task.posTop = $this.position().top;
+                if (ganttEngAreaID != 'gantt-staging-area-id') {
+                    task.posLeft = $this.position().left;
+                    task.posTop = $this.position().top;
+                }
+                else{
+                    task.posLeft = 0;
+                    task.posTop = 0;
+                }
+
 
                 if (LogicServices.DEBUG) {
                     console.log('Task ' + id + ' coordinates - Left: ' + $this.position().left + ' Top: ' + $this.position().top);
@@ -418,12 +427,14 @@ LogicServices.TaskManager = (function () {
 
     ////////////////////////////////////////////////////////////////////////
     // Task class
-    Task = function (taskID, task, assignedArea) {
+    Task = function (taskNum, taskID, task, assignedArea) {
+        this.taskNum = taskNum;
         this.taskID = taskID;
         this.$task = task;
         this.$assignedArea = assignedArea;
         this.posLeft = 0;
         this.posTop = 0;
+        this.width = 80;    // default task width
     };
 
 
