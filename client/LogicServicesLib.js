@@ -24,9 +24,11 @@ LogicServices = (function () {
         showModalOKCancel,
         rearrangeSchedule,
         scheduleReshuffle,
+        keypressUnschedule,
 
         // private functions
-        rearrangeTasks;
+        rearrangeTasks,
+        keypressUnscheduleCallback;
 
 
     // functions definitions
@@ -50,6 +52,11 @@ LogicServices = (function () {
         // Scheduling Workflow - Schedule & Reshuffle click event handler
         $('#btn-schedule-reshuffle').click(function () {
             scheduleReshuffle();
+        });
+
+        // Unschedule tasks with keypress
+        $('body').keypress(function (event) {
+            keypressUnschedule(event);
         });
 
     };
@@ -92,14 +99,14 @@ LogicServices = (function () {
                     label: "OK",
                     className: "btn-primary",
                     callback: function() {
-                        callback();
+                        callback(); // if OK pressed, then call callback()
                     }
                 },
                 cancel: {
                     label: "Cancel",
                     className: "btn-default",
                     callback: function() {
-                        // do nothing but close
+                        // if Cancel pressed, don't do anything
                     }
                 }
             }
@@ -202,6 +209,34 @@ LogicServices = (function () {
 
     };
 
+    // Unschedule selected assignments when key 'u' is pressed
+    keypressUnschedule = function (event) {
+
+        // 'u' char code is 117
+        if (event.which == 117) {
+
+            // validate at least 1 selected Task
+            if (LogicServices.TaskManager.ListSelectedTasks.length < 1) {
+                LogicServices.showModalOK('Unschedule Task', 'Please select at least one Task.');
+                return;
+            }
+
+            showModalOKCancel('Unschedule Selected Tasks', 'Are you sure you wish to unschedule selected tasks?', keypressUnscheduleCallback);
+        }
+
+    };
+
+    keypressUnscheduleCallback = function () {
+        try
+        {
+            // unschedule task here
+            LogicServices.TaskManager.unscheduleTask(LogicServices.TaskManager.ListSelectedTasks);
+        }
+        catch (err) {
+            LogicServices.showModalOK('Error Unscheduling Task', err.message);
+        }
+    };
+
 
     // return object
     /////////////////////////////////////////////
@@ -216,7 +251,8 @@ LogicServices = (function () {
         showModalOKCancel: showModalOKCancel,
         convertToTwoDigitString: convertToTwoDigitString,
         rearrangeSchedule: rearrangeSchedule,
-        scheduleReshuffle: scheduleReshuffle
+        scheduleReshuffle: scheduleReshuffle,
+        keypressUnschedule: keypressUnschedule
 
     };
 

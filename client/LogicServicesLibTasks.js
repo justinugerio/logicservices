@@ -22,6 +22,7 @@ LogicServices.TaskManager = (function () {
         // public
         initialize,
         createTask,
+        createAssignment,
         constructTask,
         unscheduleTask,
         rescheduleTask,
@@ -50,24 +51,41 @@ LogicServices.TaskManager = (function () {
         // initialize create task button event
         $('#btn-create-task').click(function () {
 
-            var selectedEngineer = LogicServices.EngineerManager.getSelectedEngineerIndex();
-
-            // validate only 1 Engineer selected
-            if (selectedEngineer < 0) {
-                LogicServices.showModalOK('Create Task', 'Please select an Engineer.');
-                return;
-            }
-
             try
             {
                 // create task here
-                createTask(selectedEngineer);
+                createTask();
 
                 // update number of tasks badge
                 $('#num-tasks-badge-id').text(NumTasks);
             }
             catch (err) {
                 LogicServices.showModalOK('Error Creating Task', err.message);
+            }
+
+        });
+
+        // initialize create assignment button event
+        $('#btn-create-assignment').click(function () {
+
+            var selectedEngineer = LogicServices.EngineerManager.getSelectedEngineerIndex();
+
+            // validate only 1 Engineer selected
+            if (selectedEngineer < 0) {
+                LogicServices.showModalOK('Create Assignment', 'Please select an Engineer.');
+                return;
+            }
+
+            try
+            {
+                // create task here
+                createAssignment(selectedEngineer);
+
+                // update number of tasks badge
+                $('#num-tasks-badge-id').text(NumTasks);
+            }
+            catch (err) {
+                LogicServices.showModalOK('Error Creating Assignment', err.message);
             }
 
         });
@@ -123,7 +141,28 @@ LogicServices.TaskManager = (function () {
     };
 
     // create task factory method
-    createTask = function (engNum) {
+    createTask = function () {
+
+        var $task, task, taskNum, $ganttStagingArea;
+
+        taskNum = currentTaskCounter;
+        $ganttStagingArea = LogicServices.GanttManager.GanttArea.$GanttStagingArea;
+
+        $task = constructTask(taskNum);
+
+        $ganttStagingArea.append($task);    // add $task to gantt engineer area
+
+        task = new Task(taskNum, $task.attr('id'), $task, $ganttStagingArea);   // create task object
+        $task.css({ left: task.posLeft, top: task.posTop });    // set left and top default positions
+        ListTasks.push(task);       // add task to list of Task objects
+
+        NumTasks++;     // increment counters
+        currentTaskCounter++;
+
+    };
+
+    // create task assigned to specified engineer
+    createAssignment = function (engNum) {
 
         var $task, task, taskNum, $assignedArea, assignedAreaID;
 
@@ -132,9 +171,13 @@ LogicServices.TaskManager = (function () {
         assignedAreaID = $assignedArea.attr('id');
         //height = $assignedArea.innerHeight();
 
-        $task = constructTask(taskNum, assignedAreaID);
+        $task = constructTask(taskNum);
 
         $assignedArea.append($task);    // add $task to gantt engineer area
+
+        $task.draggable({
+            axis: 'x',
+            containment: '#' + assignedAreaID });  // set draggable axis and draggable area
 
         task = new Task(taskNum, $task.attr('id'), $task, $assignedArea);   // create task object
         $task.css({ left: task.posLeft, top: task.posTop });    // set left and top default positions
@@ -146,7 +189,7 @@ LogicServices.TaskManager = (function () {
     };
 
     // construct task with taskID
-    constructTask = function (taskNum, assignedAreaID) {
+    constructTask = function (taskNum) {
 
         var $task, height = 38;     // height of draggable tasks, in pixels
         var taskID = "task-id-" + taskNum;
@@ -156,13 +199,13 @@ LogicServices.TaskManager = (function () {
         $task.addClass('ui-widget-content draggable-task'); // set class as JQuery UI draggable
         $task.html('<strong class="text-nowrap">' + 'Task ' + taskNum + '</strong>');    // set display text value
 
-
         $task.draggable({   distance: 10,
             snap: '.gantt-engineer-area',
             snapMode: 'inner',
             revert: 'invalid',
-            axis: 'x',
-            containment: '#' + assignedAreaID });  // set draggable axis and draggable area
+            axis: 'xy',
+            containment: false
+        });  // set draggable axis and draggable area
 
         $task.resizable({
             maxHeight: height,
@@ -202,7 +245,6 @@ LogicServices.TaskManager = (function () {
                     task.posLeft = 0;
                     task.posTop = 0;
                 }
-
 
                 if (LogicServices.DEBUG) {
                     console.log('Task ' + id + ' coordinates - Left: ' + $this.position().left + ' Top: ' + $this.position().top);
@@ -301,8 +343,10 @@ LogicServices.TaskManager = (function () {
                 task.$assignedArea = $ganttEngArea;  // set task to new drag area
 
                 ganttEngAreaID = $ganttEngArea.attr('id');
-                $taskDetach.draggable({ axis: 'x', containment: '#' + ganttEngAreaID });   // set axes of motion and containment
-                //$taskDetach.resizable( { containment: '#' + ganttEngAreaID } );  // set containment and max/min for resizing
+                $taskDetach.draggable({
+                    axis: 'x',
+                    containment: '#' + ganttEngAreaID
+                });   // set axes of motion and containment
 
                 $taskDetach.removeClass('selected-task');   // unselect task
                 $taskDetach.css({ top: '0px', left: '0px'});    // schedule to top/left as much as possible
@@ -321,7 +365,7 @@ LogicServices.TaskManager = (function () {
 
     // reschedule task to GanttEngArea from drag & drop
     rescheduleTaskDragAndDrop = function ($ganttEngArea, $task) {
-        //alert($ganttEngArea.attr('id') + ' ' + $task.attr('id'));
+
         var $newTask, task, assignedAreaID, taskWidth, dropPositionLeft, isSelected;
 
         task = LogicServices.TaskManager.getTaskByID($task.attr('id'));
@@ -339,6 +383,11 @@ LogicServices.TaskManager = (function () {
             $newTask = LogicServices.TaskManager.constructTask(task.taskNum, $ganttEngArea.attr('id'));
             $newTask.css('width', taskWidth);
             $newTask.css('left', dropPositionLeft);
+
+            $newTask.draggable({
+                axis: 'x',
+                containment: '#' + $ganttEngArea.attr('id')
+            });   // set axes of motion and containment
 
             if (isSelected) {
                 $newTask.addClass('selected-task');
@@ -506,8 +555,10 @@ LogicServices.TaskManager = (function () {
 
         NumTasks: NumTasks,
         ListTasks: ListTasks,
+        ListSelectedTasks: ListSelectedTasks,
         initialize: initialize,
         createTask: createTask,
+        createAssignment: createAssignment,
         constructTask: constructTask,
         unscheduleTask: unscheduleTask,
         rescheduleTask: rescheduleTask,

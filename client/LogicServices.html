@@ -124,11 +124,23 @@
                         <div class="col-md-4">
                             <div class="panel panel-info">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Schedule Task</h3>
+                                    <h3 class="panel-title">Create Task</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <p>Select an Engineer and then click to schedule a Task.</p>
-                                    <button id="btn-create-task" class="btn btn-success center-block"><strong>Schedule</strong></button>
+                                    <p class="panel-scheduling">Click to create a Task.</p>
+                                    <button id="btn-create-task" class="btn btn-success center-block"><strong>Create</strong></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Create Assignment</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p class="panel-scheduling">Select an Engineer and then click to schedule a Task.</p>
+                                    <button id="btn-create-assignment" class="btn btn-primary center-block"><strong>Schedule</strong></button>
                                 </div>
                             </div>
                         </div>
@@ -139,19 +151,19 @@
                                     <h3 class="panel-title">Unschedule Task</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <p>Select Tasks from the Gantt and then click to unschedule.</p>
+                                    <p class="panel-scheduling">Select Tasks from the Gantt and then click to unschedule.</p>
                                     <button id="btn-unschedule-task" class="btn btn-danger center-block"><strong>Unschedule</strong></button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-4 hidden"> <!-- Hide for now due to drag & drop reschedule functionality -->
+                        <div class="col-md-4 invisible"> <!-- Hide for now due to drag & drop reschedule functionality -->
                             <div class="panel panel-info">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">Reschedule Task</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <p>Select an Engineer and Tasks from the Unscheduled Area and then click to reschedule.</p>
+                                    <p class="panel-scheduling">Select an Engineer and Tasks from the Unscheduled Area and then click to reschedule.</p>
                                     <button id="btn-reschedule-task" class="btn btn-warning center-block"><strong>Reschedule</strong></button>
                                 </div>
                             </div>
@@ -175,7 +187,7 @@
                                     <h3 class="panel-title">Rearrange Schedule</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <p>Select an Engineer and move the Timeline.</p>
+                                    <p class="panel-scheduling">Select an Engineer and move the Timeline.</p>
                                     <button id="btn-rearrange-schedule" class="btn btn-primary center-block"><strong>Rearrange Schedule</strong></button>
                                 </div>
                             </div>
@@ -197,7 +209,7 @@
                                     <h3 class="panel-title">Schedule & Reshuffle</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <p>Select an unscheduled Task and Schedule.</p>
+                                    <p class="panel-scheduling">Select an unscheduled Task and Schedule.</p>
                                     <button id="btn-schedule-reshuffle" class="btn btn-primary center-block"><strong>Schedule & Reshuffle</strong></button>
                                 </div>
                             </div>

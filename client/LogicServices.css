@@ -11,7 +11,7 @@ th span {
 /* Classes //////////////////////////////////////// */
 
 .main-header {
-    background-color: lightskyblue;
+    background-color: #40b1fa;
     width: 100%;
     height: 140px;
     position: absolute;
@@ -96,6 +96,10 @@ th span {
 .tab-div {
     margin: 20px;
     padding-bottom: 15px;
+}
+
+.panel-scheduling {
+    min-height: 40px;
 }
 
 /* IDs ///////////////////////////////////////// */
