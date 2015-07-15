@@ -25,6 +25,7 @@ LogicServices = (function () {
         rearrangeSchedule,
         scheduleReshuffle,
         keypressUnschedule,
+        keypressPin,
 
         // private functions
         rearrangeTasks,
@@ -55,8 +56,10 @@ LogicServices = (function () {
         });
 
         // Unschedule tasks with keypress
+        // Pin selected tasks
         $('body').keypress(function (event) {
             keypressUnschedule(event);
+            keypressPin(event);
         });
 
     };
@@ -226,6 +229,7 @@ LogicServices = (function () {
 
     };
 
+    // callback function to unschedule tasks
     keypressUnscheduleCallback = function () {
         try
         {
@@ -236,6 +240,36 @@ LogicServices = (function () {
             LogicServices.showModalOK('Error Unscheduling Task', err.message);
         }
     };
+
+    // Pin tasks from Selected Tasks List when key 'p' is pressed
+    keypressPin = function (event) {
+        // 'p' char code is 112
+        if (event.which == 112) {
+
+            // validate at least 1 selected Task
+            if (LogicServices.TaskManager.ListSelectedTasks.length < 1) {
+                LogicServices.showModalOK('Pin Task', 'Please select at least one Task.');
+                return;
+            }
+
+            showModalOKCancel('Pin Selected Tasks', 'Are you sure you wish to pin/unpin selected tasks?', keypressPinCallback);
+        }
+
+    };
+
+    // callback for Pinning tasks
+    keypressPinCallback = function () {
+        try
+        {
+            // pin tasks here
+            LogicServices.TaskManager.pinTask(LogicServices.TaskManager.ListSelectedTasks);
+        }
+        catch (err) {
+            LogicServices.showModalOK('Error Pinning Task', err.message);
+        }
+
+    };
+
 
 
     // return object
@@ -252,7 +286,8 @@ LogicServices = (function () {
         convertToTwoDigitString: convertToTwoDigitString,
         rearrangeSchedule: rearrangeSchedule,
         scheduleReshuffle: scheduleReshuffle,
-        keypressUnschedule: keypressUnschedule
+        keypressUnschedule: keypressUnschedule,
+        keypressPin: keypressPin
 
     };
 

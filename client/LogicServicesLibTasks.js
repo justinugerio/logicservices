@@ -31,6 +31,7 @@ LogicServices.TaskManager = (function () {
         clearAllTasks,
         getTasksAssignedToEng,
         sortTasksByPosLeft,
+        pinTask,
 
         // private
         selectTask,
@@ -280,6 +281,11 @@ LogicServices.TaskManager = (function () {
             task = getTaskByID(taskID);
 
             if ($task[0]) {
+
+                // check if task is pinned
+                if (task.pinned) {
+                    continue;   // don't unschedule if pinned
+                }
 
                 $taskDetach = null;
                 $ganttStagingArea = LogicServices.GanttManager.GanttArea.$GanttStagingArea; // check where task is first
@@ -536,6 +542,37 @@ LogicServices.TaskManager = (function () {
 
     };
 
+    // Pin tasks from selected tasks list
+    pinTask = function () {
+
+        var $task, task, taskID;
+
+        for (var i=0; i < ListSelectedTasks.length; i++) {
+            taskID = ListSelectedTasks[i];
+            $task = $('#' + taskID);
+            task = getTaskByID(taskID);
+
+            if ($task[0]) {
+
+                if (task.pinned) {  // if task is already pinned, unpin it
+                    task.pinned = false;
+
+                    $task.resizable({ disabled: false });
+                    $task.draggable( { disabled: false } );
+                }
+                else {  // otherwise pin it
+                    task.pinned = true;
+
+                    $task.resizable({ disabled: true });
+                    $task.draggable( { disabled: true } );
+                }
+
+                $task.toggleClass('pinned-task');
+            }
+        }
+
+    };
+
     ////////////////////////////////////////////////////////////////////////
     // Task class
     Task = function (taskNum, taskID, task, assignedArea) {
@@ -546,6 +583,7 @@ LogicServices.TaskManager = (function () {
         this.posLeft = 0;
         this.posTop = 0;
         this.width = 80;    // default task width
+        this.pinned = false;
     };
 
 
@@ -566,7 +604,8 @@ LogicServices.TaskManager = (function () {
         getTaskByID: getTaskByID,
         clearAllTasks: clearAllTasks,
         getTasksAssignedToEng: getTasksAssignedToEng,
-        sortTasksByPosLeft: sortTasksByPosLeft
+        sortTasksByPosLeft: sortTasksByPosLeft,
+        pinTask: pinTask
 
     };
 
