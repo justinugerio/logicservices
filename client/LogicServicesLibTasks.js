@@ -181,6 +181,7 @@ LogicServices.TaskManager = (function () {
             containment: '#' + assignedAreaID });  // set draggable axis and draggable area
 
         task = new Task(taskNum, $task.attr('id'), $task, $assignedArea);   // create task object
+        task.scheduled  = true;
         $task.css({ left: task.posLeft, top: task.posTop });    // set left and top default positions
         ListTasks.push(task);       // add task to list of Task objects
 
@@ -298,6 +299,7 @@ LogicServices.TaskManager = (function () {
 
                 $ganttStagingArea.append($taskDetach);  // move to Gantt Staging Area
                 task.$assignedArea = $ganttStagingArea;  // set task to new drag area
+                task.scheduled = false;     // set flag to unscheduled
 
                 ganttStagingAreaID = $ganttStagingArea.attr('id');
 
@@ -347,6 +349,7 @@ LogicServices.TaskManager = (function () {
                 $ganttEngArea = engineerSet.ganttEngArea.$GanttEngineerArea;    // get $GanttEngineerArea jqobject
                 $ganttEngArea.append($taskDetach);  // move to Gantt Engineer Area
                 task.$assignedArea = $ganttEngArea;  // set task to new drag area
+                task.scheduled = true;  // set flag to scheduled
 
                 ganttEngAreaID = $ganttEngArea.attr('id');
                 $taskDetach.draggable({
@@ -403,6 +406,7 @@ LogicServices.TaskManager = (function () {
             task.$task = $newTask;
             task.$assignedArea = $ganttEngArea;
             task.posLeft = dropPositionLeft;
+            task.scheduled = true;  // set flag to scheduled
 
             $ganttEngArea.append($newTask); // add it to ganttEngArea
 
@@ -584,6 +588,7 @@ LogicServices.TaskManager = (function () {
         this.posTop = 0;
         this.width = 80;    // default task width
         this.pinned = false;
+        this.scheduled = false;
     };
 
 

@@ -25,6 +25,7 @@ LogicServices.EngineerManager = (function () {
         getEngineerSetByIndex,
         getEngineerSetByName,
         getSelectedEngineerIndex,
+        getEngineerIndexByGanttEngAreaID,
 
         // private
         initEvents,
@@ -116,6 +117,24 @@ LogicServices.EngineerManager = (function () {
 
     };
 
+    // get Engineer ID by GanttEngArea's ID
+    getEngineerIndexByGanttEngAreaID = function (ganttEngAreaID) {
+
+        var engSet, id;
+
+        for (var i=0; i < ListEngineerSets.length; i++) {
+
+            engSet = ListEngineerSets[i];
+            id = engSet.$ganttEngArea.attr('id');
+
+            if (ganttEngAreaID == id) {
+                return i;
+            }
+        }
+
+        return -1;  // if not found
+    };
+
     // return selected Engineer index
     getSelectedEngineerIndex = function () {
         return SelectedEngineerIndex;
@@ -140,7 +159,8 @@ LogicServices.EngineerManager = (function () {
         initialize: initialize,
         getEngineerSetByIndex: getEngineerSetByIndex,
         getEngineerSetByName: getEngineerSetByName,
-        getSelectedEngineerIndex: getSelectedEngineerIndex
+        getSelectedEngineerIndex: getSelectedEngineerIndex,
+        getEngineerIndexByGanttEngAreaID: getEngineerIndexByGanttEngAreaID
 
     };
 

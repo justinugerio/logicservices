@@ -119,40 +119,46 @@ LogicServices = (function () {
     // Rearrange Schedule by operating on selected Engineer and rearranging schedule based on current position of Timeline
     rearrangeSchedule = function () {
 
-        //showModalOK('Under Construction', 'Under Construction!');
-
-        var selectedEngineerIndex, engineerSet, $ganttEngArea, ganttEngAreaWidth,
+        var selectedEngineerIndex, $ganttEngArea, ganttEngAreaWidth,
               $timeline, timelinePosLeft, scheduleSpaceWidth,
-              //sortedTaskArray,
               taskArray, sortedTaskArray, stopIndex,
               unscheduleTaskArray = [];
 
-        // validate selected engineer
-        selectedEngineerIndex = LogicServices.EngineerManager.getSelectedEngineerIndex();
+        var selectedTask, selectedTaskID, selectedTaskEndPosition, startPosition;
 
-        if (selectedEngineerIndex < 0) {
-            showModalOK('Rearrange Schedule', 'Please select an Engineer.');
+        if (LogicServices.TaskManager.ListSelectedTasks.length != 1) {
+            showModalOK('Rearrange Schedule', 'Please select only <strong><em>one</em></strong> Task.');
+            return;
+        }
+
+        selectedTask = LogicServices.TaskManager.getTaskByID(LogicServices.TaskManager.ListSelectedTasks[0]);
+        selectedTaskID = selectedTask.taskID;
+
+        if (!selectedTask.scheduled) {
+            showModalOK('Rearrange Schedule', 'Please select a <strong><em>Scheduled</em></strong> Task.');
             return;
         }
 
         // get width of ganttEngArea
-        engineerSet = LogicServices.EngineerManager.getEngineerSetByIndex(selectedEngineerIndex);
-        $ganttEngArea = engineerSet.$ganttEngArea;
+        $ganttEngArea = selectedTask.$assignedArea;
         ganttEngAreaWidth = $ganttEngArea.innerWidth();
 
-        // get 'left' position of timeline, and calculate how much space left to schedule
+        // get 'left' position of timeline
         $timeline = LogicServices.GanttManager.GanttArea.$Timeline;
         timelinePosLeft = $timeline.position().left;
-        scheduleSpaceWidth = ganttEngAreaWidth - timelinePosLeft;
+
+        // get 'left' position of end of selected Task
+        selectedTaskEndPosition = selectedTask.posLeft + selectedTask.width;
 
         // get all task assigned to engineer
+        selectedEngineerIndex = LogicServices.EngineerManager.getEngineerIndexByGanttEngAreaID($ganttEngArea.attr('id'));
         taskArray = LogicServices.TaskManager.getTasksAssignedToEng(selectedEngineerIndex);
 
         // sort tasks by 'left' position
         sortedTaskArray = LogicServices.TaskManager.sortTasksByPosLeft(taskArray);
 
         // place tasks starting with 'left' position of timeline on engineer gantt area
-        stopIndex = rearrangeTasks(timelinePosLeft, scheduleSpaceWidth, sortedTaskArray); // use taskArray instead of sortedTaskArray
+        stopIndex = rearrangeTasks(selectedTaskID, selectedTaskEndPosition, timelinePosLeft, ganttEngAreaWidth, sortedTaskArray); // use sortedTaskArray
 
         // unschedule all other tasks that don't fit
         if (stopIndex < sortedTaskArray.length) {
@@ -172,33 +178,55 @@ LogicServices = (function () {
     };
 
     // place tasks on eng gantt area starting at timeline up to end of eng gantt are space
-    rearrangeTasks = function (timelinePos, scheduleSpace, taskArray) {
+    rearrangeTasks = function (taskID, taskEndPos, timelinePos, ganttWidth, taskArray) {
         var task, $task, taskWidth,
-              currSpace = scheduleSpace,
-              currPos = timelinePos;
+              startPosition, scheduleSpaceWidth,
+              currSpace, currPos;
+
+        startPosition = (taskEndPos > timelinePos) ? taskEndPos : timelinePos;
+
+        // and calculate how much space left to schedule
+        scheduleSpaceWidth = ganttWidth - startPosition;
+        currPos = startPosition;
+        currSpace = scheduleSpaceWidth;
+
 
         for (var j=0; j < taskArray.length; j++) {
             task = taskArray[j];
-            $task = task.$task;
-            $task.css('position', 'static');    // reset positions to clear and correct
-            $task.css( {left: 0, top: 0} );
+
+            if (task.posLeft > startPosition) {  // select tasks that are after timeline or selected task end position
+                if (task.taskID != taskID) {    // do not move selected task
+                    $task = task.$task;
+                    $task.css('position', 'static');    // reset positions to clear and correct
+                    $task.css( {left: 0, top: 0} );
+                }
+
+            }
+
         }
 
         for (var i=0; i < taskArray.length; i++) {
             task = taskArray[i];
-            $task = task.$task;
 
-            taskWidth = $task.outerWidth();
-            $task.css('position', 'absolute');  // set back to absolute
+            if (task.posLeft > startPosition) {  // select tasks that are after timeline or selected task end position
 
-            if ((currSpace - taskWidth) > 0) {
-                $task.css({ left: currPos });
+                if (task.taskID != taskID) {  // do not move selected task
+                    $task = task.$task;
 
-                currPos = currPos + taskWidth;    // advance currPos
-                currSpace = currSpace - taskWidth;  // shrink currSpace
-            }
-            else {
-                return i;   // return index where it can't schedule
+                    taskWidth = $task.outerWidth();
+                    $task.css('position', 'absolute');  // set back to absolute
+
+                    if ((currSpace - taskWidth) > 0) {
+                        $task.css({ left: currPos });
+                        task.posLeft = currPos;
+
+                        currPos = currPos + taskWidth;    // advance currPos
+                        currSpace = currSpace - taskWidth;  // shrink currSpace
+                    }
+                    else {
+                        return i;   // return index where it can't schedule
+                    }
+                }
             }
         }
 
