@@ -29,6 +29,7 @@ LogicServices = (function () {
         showAbout,
 
         // private functions
+        findStartPosition,
         rearrangeTasks,
         keypressUnscheduleCallback,
         keypressPinCallback;
@@ -178,7 +179,6 @@ LogicServices = (function () {
 
             // unschedule tasks in list
             LogicServices.TaskManager.unscheduleTask(unscheduleTaskArray);
-
         }
 
     };
@@ -187,13 +187,12 @@ LogicServices = (function () {
     rearrangeTasks = function (taskID, taskEndPos, timelinePos, ganttWidth, taskArray) {
         var task, $task, taskWidth, startPosition, scheduleSpaceWidth, currSpace, currPos;
 
-        startPosition = (taskEndPos > timelinePos) ? taskEndPos : timelinePos;
+        startPosition = findStartPosition(taskEndPos, timelinePos, taskArray);
 
         // and calculate how much space left to schedule
         scheduleSpaceWidth = ganttWidth - startPosition;
         currPos = startPosition;
         currSpace = scheduleSpaceWidth;
-
 
         for (var j=0; j < taskArray.length; j++) {
             task = taskArray[j];
@@ -204,7 +203,6 @@ LogicServices = (function () {
                     $task.css('position', 'static');    // reset positions to clear and correct
                     $task.css( {left: 0, top: 0} );
                 }
-
             }
 
         }
@@ -235,6 +233,24 @@ LogicServices = (function () {
         }
 
         return i; // return last index, which is being incremented even after the loop finishes
+    };
+
+    // find start position by using selected task, timeline, or any other task overlapping timeline
+    findStartPosition = function (taskEndPos, timelinePos, taskArray) {
+        var startPosition, task, taskPosWithWidth;
+
+        startPosition = (taskEndPos > timelinePos) ? taskEndPos : timelinePos;  // initially set startPos to the greater of the two
+
+        for (var i = 0; i < taskArray.length; i++) {
+            task = taskArray[i];
+            taskPosWithWidth = task.posLeft + task.width;
+
+            if ( (task.posLeft < timelinePos) && (taskPosWithWidth > startPosition) ) { // if task is overlapping timeline AND the endPos > current startPosition
+                startPosition = taskPosWithWidth;   // set new startPos
+            }
+        }
+
+        return startPosition;
     };
 
     // Schedule and Reshuffle by attempting to schedule task and move other tasks around
