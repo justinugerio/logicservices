@@ -29,7 +29,8 @@ LogicServices = (function () {
 
         // private functions
         rearrangeTasks,
-        keypressUnscheduleCallback;
+        keypressUnscheduleCallback,
+        keypressPinCallback;
 
 
     // functions definitions
@@ -120,11 +121,10 @@ LogicServices = (function () {
     rearrangeSchedule = function () {
 
         var selectedEngineerIndex, $ganttEngArea, ganttEngAreaWidth,
-              $timeline, timelinePosLeft, scheduleSpaceWidth,
+              $timeline, timelinePosLeft,
               taskArray, sortedTaskArray, stopIndex,
-              unscheduleTaskArray = [];
-
-        var selectedTask, selectedTaskID, selectedTaskEndPosition, startPosition;
+              unscheduleTaskArray = [],
+              selectedTask, selectedTaskID, selectedTaskEndPosition;
 
         if (LogicServices.TaskManager.ListSelectedTasks.length != 1) {
             showModalOK('Rearrange Schedule', 'Please select only <strong><em>one</em></strong> Task.');
@@ -179,9 +179,7 @@ LogicServices = (function () {
 
     // place tasks on eng gantt area starting at timeline up to end of eng gantt are space
     rearrangeTasks = function (taskID, taskEndPos, timelinePos, ganttWidth, taskArray) {
-        var task, $task, taskWidth,
-              startPosition, scheduleSpaceWidth,
-              currSpace, currPos;
+        var task, $task, taskWidth, startPosition, scheduleSpaceWidth, currSpace, currPos;
 
         startPosition = (taskEndPos > timelinePos) ? taskEndPos : timelinePos;
 

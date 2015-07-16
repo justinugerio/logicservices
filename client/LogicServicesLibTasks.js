@@ -170,7 +170,6 @@ LogicServices.TaskManager = (function () {
         taskNum = currentTaskCounter;
         $assignedArea = LogicServices.EngineerManager.ListEngineerSets[engNum].ganttEngArea.$GanttEngineerArea;
         assignedAreaID = $assignedArea.attr('id');
-        //height = $assignedArea.innerHeight();
 
         $task = constructTask(taskNum);
 
@@ -464,8 +463,8 @@ LogicServices.TaskManager = (function () {
             $task = $('#' + task.taskID).remove();
         }
 
-        ListTasks = [];
-        ListSelectedTasks = [];
+        ListTasks.splice(0, ListTasks.length);  // use splice to clear existing array, instead of changing to blank array
+        ListSelectedTasks.splice(0, ListSelectedTasks.length);  // use splice for same reason as above
         NumTasks = 0;
         currentTaskCounter = 1;
 
