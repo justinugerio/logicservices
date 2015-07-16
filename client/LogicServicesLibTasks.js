@@ -25,7 +25,6 @@ LogicServices.TaskManager = (function () {
         createAssignment,
         constructTask,
         unscheduleTask,
-        rescheduleTask,
         rescheduleTaskDragAndDrop,
         getTaskByID,
         clearAllTasks,
@@ -131,7 +130,7 @@ LogicServices.TaskManager = (function () {
             try
             {
                 // reschedule task here
-                rescheduleTask(selectedEngineer, ListSelectedTasks);
+                //rescheduleTask(selectedEngineer, ListSelectedTasks);
             }
             catch (err) {
                 LogicServices.showModalOK('Error Rescheduling Task', err.message);
@@ -208,28 +207,6 @@ LogicServices.TaskManager = (function () {
             containment: false
         });  // set draggable axis and draggable area
 
-        $task.resizable({
-            maxHeight: height,
-            minHeight: height,
-
-            stop: function (event, ui) {
-                var $this = $(this);
-                var id = $this.attr('id');
-                var task = getTaskByID(id);
-
-                task.width = ui.size.width;
-
-                if (LogicServices.DEBUG) {
-                    console.log('Task ' + id + ' Width: ' + task.width);
-                }
-            }
-
-        }); // set min/max resize
-
-        $task.css({
-            height: height + 'px'
-        });
-
         $task.draggable({
             stop: function () {         // the 'stop' callback is invoked when user stops dragging task
                 var $this = $(this);
@@ -248,21 +225,72 @@ LogicServices.TaskManager = (function () {
                 }
 
                 if (LogicServices.DEBUG) {
-                    console.log('Task ' + id + ' coordinates - Left: ' + $this.position().left + ' Top: ' + $this.position().top);
+                    console.log('Task ' + id + ' coordinates - Left: ' + $this.position().left + ' Top: ' + $this.position().top);  // event to write top and left coordinates
                 }
+            },
+            start: function( ) {
+                var $this = $(this);
+                try {
+                    $this.popover('hide');
+                } catch (error) {}
+            }
+        });
+
+        $task.resizable({
+            maxHeight: height,
+            minHeight: height,
+
+            stop: function (event, ui) {
+                var $this = $(this);
+                var id = $this.attr('id');
+                var task = getTaskByID(id);
+
+                task.width = ui.size.width;
+
+                if (LogicServices.DEBUG) {
+                    console.log('Task ' + id + ' Width: ' + task.width);
+                }
+            },
+            start: function( ) {
+                var $this = $(this);
+                try {
+                    $this.popover('hide');
+                } catch (error) {}
             }
 
-        }); // set event to write left and top coordinates
+        }); // set min/max resize
+
+        $task.css({
+            height: height + 'px'
+        });
+
+        // bootstrap popover functionality
+        $task.popover({
+            //title: 'Task ' + taskNum,
+            content: 'Task' + taskNum,
+            trigger: 'hover focus',
+            placement: 'top',
+            delay: { show: 1200, hide: 0 }
+
+        });
+        $task.popover('disable');   // we want to initially disable until task is 'selected'
 
         // event for click to highlight selected task
         $task.click(function() {     // click or dblclick
             $(this).toggleClass('selected-task');
 
+            try {
+                $task.popover('hide');
+            }
+            catch (error) {}
+
             if ($(this).hasClass('selected-task')) {
+                $task.popover('enable');    // enable popover
                 selectTask($(this));  // add to ListSelectedTasks
             }
             else
             {
+                $task.popover('disable');   // disable popover
                 unselectTask($(this));    // remove from ListSelectedTasks
             }
         });
@@ -309,6 +337,7 @@ LogicServices.TaskManager = (function () {
                 //$taskDetach.resizable( { containment: '#' + ganttStagingAreaID } );  // set containment and max/min for resizing
 
                 $taskDetach.removeClass('selected-task');   // unselect task
+                $task.popover('disable');   // we want to disable popover since it is unselected
                 $taskDetach.css({ top: '0px', left: '0px'});    // place to top/left as much as possible
                 listToRemove.push($taskDetach);      // mark to remove from Selected Tasks list
 
@@ -322,6 +351,7 @@ LogicServices.TaskManager = (function () {
 
     };
 
+    /*
     // reschedule tasks to specified engineer
     rescheduleTask = function (engNum, selectedTasks) {
         var $task, $taskDetach, task, taskID, $ganttStagingArea,
@@ -369,7 +399,7 @@ LogicServices.TaskManager = (function () {
         }
 
     };
-
+*/
 
     // reschedule task to GanttEngArea from drag & drop
     rescheduleTaskDragAndDrop = function ($ganttEngArea, $task) {
@@ -399,6 +429,7 @@ LogicServices.TaskManager = (function () {
 
             if (isSelected) {
                 $newTask.addClass('selected-task');
+                $newTask.popover('enable');
             }
 
             // set task properties
@@ -603,7 +634,6 @@ LogicServices.TaskManager = (function () {
         createAssignment: createAssignment,
         constructTask: constructTask,
         unscheduleTask: unscheduleTask,
-        rescheduleTask: rescheduleTask,
         rescheduleTaskDragAndDrop: rescheduleTaskDragAndDrop,
         getTaskByID: getTaskByID,
         clearAllTasks: clearAllTasks,

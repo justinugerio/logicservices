@@ -32,11 +32,11 @@ th span {
     float: left;
     margin: 0;
     border-style: solid;
-    border-color: #089b06;
     border-width: 2px;
     border-radius: 4px;
-    background-color: #0ae726;
-    color: #f74e3f;
+    border-color: #089b06;  /*border-color: #089b06; */
+    background-color: #0ae726;  /*background-color: #0ae726;*/
+    color: #096030;
     z-index: 4;
     overflow: hidden;
 }
@@ -89,7 +89,6 @@ th span {
 .selected-task {
     padding: 5px;
     border-width: 4px;
-    border-color: #087706;
 }
 
 .pinned-task {
