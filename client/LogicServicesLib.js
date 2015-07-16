@@ -26,6 +26,7 @@ LogicServices = (function () {
         scheduleReshuffle,
         keypressUnschedule,
         keypressPin,
+        showAbout,
 
         // private functions
         rearrangeTasks,
@@ -62,6 +63,11 @@ LogicServices = (function () {
             keypressUnschedule(event);
             keypressPin(event);
         });
+
+        // About message
+        $('#about-id').click(function () {
+            showAbout();
+        })
 
     };
 
@@ -296,6 +302,11 @@ LogicServices = (function () {
 
     };
 
+    // show About screen
+    showAbout = function () {
+        showModalOK('About', '<img class="img-responsive center-block" src="favicon.png" alt="Image Here"><br>' +
+        '<div class="text-center"><em><strong>Copyright &copy; Justin Ugerio, 2015</strong></em></div>');
+    };
 
 
     // return object
@@ -313,7 +324,8 @@ LogicServices = (function () {
         rearrangeSchedule: rearrangeSchedule,
         scheduleReshuffle: scheduleReshuffle,
         keypressUnschedule: keypressUnschedule,
-        keypressPin: keypressPin
+        keypressPin: keypressPin,
+        showAbout: showAbout
 
     };
 
