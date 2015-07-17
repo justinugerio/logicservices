@@ -1,4 +1,0 @@
-
-- Add travel time to tasks
-
-- Add 'pinned' task status
