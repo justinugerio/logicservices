@@ -44,7 +44,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a id="about-id">About</a>
+                    <a id="about-id" style="cursor:pointer;">About</a>
                 </li>
             </ul>
         </div>
@@ -58,8 +58,8 @@
 <br><br><br>
 <!-- Page Content -->
 <div class="container">
-    <h1>Welcome to Logic Services</h1>
-    <br><br>
+    <h1>Welcome to Logic Services <small style="color: #525252">A tool for demonstrating concepts</small></h1>
+        <br><br>
 </div> <!-- end container -->
 
 
@@ -109,7 +109,7 @@
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#tab-scheduling" aria-controls="scheduling" role="tab" data-toggle="tab"><strong>Basic Scheduling</strong></a></li>
             <li role="presentation"><a href="#tab-schedule-update" aria-controls="schedule-update" role="tab" data-toggle="tab"><strong>Schedule Update</strong></a></li>
-            <li role="presentation"><a href="#tab-scheduling-workflow" aria-controls="scheduling-workflow" role="tab" data-toggle="tab"><strong>Scheduling Workflow</strong></a></li>
+            <!-- comment out <li role="presentation"><a href="#tab-scheduling-workflow" aria-controls="scheduling-workflow" role="tab" data-toggle="tab"><strong>Scheduling Workflow</strong></a></li> -->
         </ul>
 
         <!-- Tab panes -->
@@ -122,20 +122,6 @@
 
                     <!-- Scheduling Actions -->
                     <div class="row">
-                        <div class="col-md-4">
-                            <div class="panel panel-info">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Create Task</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <p class="panel-scheduling">Click to create a Task.</p>
-                                    <button id="btn-create-task" class="btn btn-success center-block">
-                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
-                                        <strong>Create</strong>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="col-md-4">
                             <div class="panel panel-info">
@@ -147,6 +133,21 @@
                                     <button id="btn-create-assignment" class="btn btn-primary center-block">
                                         <span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp;
                                         <strong>Schedule</strong>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Create Task</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p class="panel-scheduling">Click to create a Task.</p>
+                                    <button id="btn-create-task" class="btn btn-success center-block">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                        <strong>Create</strong>
                                     </button>
                                 </div>
                             </div>
@@ -178,7 +179,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>  <!-- end row -->
                     <!-- end Scheduling Actions -->
 
                 </div>
@@ -212,6 +213,7 @@
             <!-- end Schedule Update tab -->
 
             <!-- Scheduling Workflow tab -->
+            <!-- comment out since it is not implemented
             <div role="tabpanel" class="tab-pane" id="tab-scheduling-workflow">
                 <div class="tab-div">
                     <div class="row">
@@ -234,7 +236,7 @@
                     </div>
                 </div>
             </div>
-
+              -->
         </div>
         <!-- Scheduling Workflow tab -->
 

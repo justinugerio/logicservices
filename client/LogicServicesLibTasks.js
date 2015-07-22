@@ -267,7 +267,7 @@ LogicServices.TaskManager = (function () {
         // bootstrap popover functionality
         $task.popover({
             //title: 'Task ' + taskNum,
-            content: 'Task' + taskNum,
+            content: 'Task ' + taskNum,
             trigger: 'hover focus',
             placement: 'top',
             delay: { show: 1200, hide: 0 }
@@ -616,7 +616,7 @@ LogicServices.TaskManager = (function () {
         this.$assignedArea = assignedArea;
         this.posLeft = 0;
         this.posTop = 0;
-        this.width = 80;    // default task width
+        this.width = 92;    // default task width
         this.pinned = false;
         this.scheduled = false;
     };

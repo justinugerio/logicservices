@@ -199,9 +199,11 @@ LogicServices = (function () {
 
             if (task.posLeft > startPosition) {  // select tasks that are after timeline or selected task end position
                 if (task.taskID != taskID) {    // do not move selected task
-                    $task = task.$task;
-                    $task.css('position', 'static');    // reset positions to clear and correct
-                    $task.css( {left: 0, top: 0} );
+                    if (task.pinned == false) { // do not move pinned tasks
+                        $task = task.$task;
+                        $task.css('position', 'static');    // reset positions to clear and correct
+                        $task.css( {left: 0, top: 0} );
+                    }
                 }
             }
 
@@ -213,20 +215,22 @@ LogicServices = (function () {
             if (task.posLeft > startPosition) {  // select tasks that are after timeline or selected task end position
 
                 if (task.taskID != taskID) {  // do not move selected task
-                    $task = task.$task;
+                    if (task.pinned == false) { // do not move pinned tasks
+                        $task = task.$task;
 
-                    taskWidth = $task.outerWidth();
-                    $task.css('position', 'absolute');  // set back to absolute
+                        taskWidth = $task.outerWidth();
+                        $task.css('position', 'absolute');  // set back to absolute
 
-                    if ((currSpace - taskWidth) > 0) {
-                        $task.css({ left: currPos });
-                        task.posLeft = currPos;
+                        if ((currSpace - taskWidth) > 0) {
+                            $task.css({ left: currPos });
+                            task.posLeft = currPos;
 
-                        currPos = currPos + taskWidth;    // advance currPos
-                        currSpace = currSpace - taskWidth;  // shrink currSpace
-                    }
-                    else {
-                        return i;   // return index where it can't schedule
+                            currPos = currPos + taskWidth;    // advance currPos
+                            currSpace = currSpace - taskWidth;  // shrink currSpace
+                        }
+                        else {
+                            return i;   // return index where it can't schedule
+                        }
                     }
                 }
             }
