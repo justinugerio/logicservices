@@ -1,0 +1,118 @@
+/* CSS declarations */
+
+/* Elements ////////////////////////////////////// */
+
+th span {
+    margin: 10px;
+    color: #4c4cbe;
+
+}
+
+/* Classes //////////////////////////////////////// */
+
+.main-header {
+    background-color: #40b1fa;
+    width: 100%;
+    height: 140px;
+    position: absolute;
+    z-index: -1;
+}
+
+.gantt-table-container {
+    position: relative;
+    width: 1100px;
+    margin: auto;
+}
+
+.draggable-task {
+    position: absolute;
+    width: 92px;    /* size of 1 hour in gantt */
+    height: 38px;
+    padding: 7px;
+    float: left;
+    margin: 0;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
+    border-color: #089b06;  /*border-color: #089b06; */
+    background-color: #0ae726;  /*background-color: #0ae726;*/
+    color: #096030;
+    z-index: 4;
+    overflow: hidden;
+}
+
+.draggable-timeline {
+    position: absolute;
+    width: 3px;
+    border-style: solid;
+    border-width: 2px;
+    z-index: 3;
+}
+
+.gantt-area {
+    position: absolute;
+    z-index: 1;
+
+    /*
+    background-color: #06e85b;
+    opacity: 0.15;
+    */
+
+}
+
+.gantt-engineer-area {
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+
+    /*
+    border-style: solid;
+    border-width: 1px;
+    border-color: #122b40;
+    background-color: #d43f3a;
+    */
+}
+
+.gantt-staging-area {
+    height: 140px;
+    position: relative;
+}
+
+.gantt-staging-area-text {
+    opacity: 0.4;
+}
+
+.selected-engineer {
+    background-color: #95dfec;
+}
+
+.selected-task {
+    padding: 5px;
+    border-width: 4px;
+}
+
+.pinned-task {
+    border-color: #75105e;
+    background-color: #f618ca;
+    color: #fdc53a;
+}
+
+.tab-div {
+    margin: 20px;
+    padding-bottom: 15px;
+}
+
+.panel-scheduling {
+    min-height: 40px;
+}
+
+/* IDs ///////////////////////////////////////// */
+
+#gantt-table-id {
+    z-index: 0;
+}
+
+#btn-clear-tasks {
+    margin-top: 10px;
+}
+
