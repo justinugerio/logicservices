@@ -197,7 +197,7 @@ LogicServices = (function () {
         for (var j=0; j < taskArray.length; j++) {
             task = taskArray[j];
 
-            if (task.posLeft > startPosition) {  // select tasks that are after timeline or selected task end position
+            if (task.posLeft > taskEndPos) {  // (was startPosition) select tasks that are after timeline or selected task end position
                 if (task.taskID != taskID) {    // do not move selected task
                     if (task.pinned == false) { // do not move pinned tasks
                         $task = task.$task;
@@ -212,7 +212,7 @@ LogicServices = (function () {
         for (var i=0; i < taskArray.length; i++) {
             task = taskArray[i];
 
-            if (task.posLeft > startPosition) {  // select tasks that are after timeline or selected task end position
+            if (task.posLeft > taskEndPos) {  // (was startPosition) select tasks that are after timeline or selected task end position
 
                 if (task.taskID != taskID) {  // do not move selected task
                     if (task.pinned == false) { // do not move pinned tasks
@@ -325,7 +325,7 @@ LogicServices = (function () {
     // show About screen
     showAbout = function () {
         showModalOK('About', '<img class="img-responsive center-block" src="favicon.png" alt="Image Here"><br>' +
-        '<div class="text-center"><em><strong>Copyright &copy; ClickSoftware, 2015</strong></em></div>');
+        '<div class="text-center"><em><strong>Copyright &copy; Justin Ugerio, 2015</strong></em></div>');
     };
 
 
