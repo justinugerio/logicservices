@@ -327,6 +327,7 @@ LogicServices.TaskManager = (function () {
                 $ganttStagingArea.append($taskDetach);  // move to Gantt Staging Area
                 task.$assignedArea = $ganttStagingArea;  // set task to new drag area
                 task.scheduled = false;     // set flag to unscheduled
+                $task.popover('disable');   // we want to disable popover since it is unselected
 
                 ganttStagingAreaID = $ganttStagingArea.attr('id');
 
@@ -337,7 +338,7 @@ LogicServices.TaskManager = (function () {
                 //$taskDetach.resizable( { containment: '#' + ganttStagingAreaID } );  // set containment and max/min for resizing
 
                 $taskDetach.removeClass('selected-task');   // unselect task
-                $task.popover('disable');   // we want to disable popover since it is unselected
+                $taskDetach.css('position', 'absolute');    // make sure position is absolute in case rearrangeTasks() unschedules it
                 $taskDetach.css({ top: '0px', left: '0px'});    // place to top/left as much as possible
                 listToRemove.push($taskDetach);      // mark to remove from Selected Tasks list
 
